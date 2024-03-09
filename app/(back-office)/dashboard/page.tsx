@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function page() {
   return (
-    <div className='min-h-screen  w-full mt-5'>
+    <div className='min-h-screen w-full'>
          <PageActions className='flex flex-col'>
             <ThemeCustomizer />
             <ThemesTabs />

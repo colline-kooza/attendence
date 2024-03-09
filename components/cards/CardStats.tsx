@@ -50,49 +50,33 @@ export function CardsStats() {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
-      <Card>
+
+
+      {/* studentCard */}
+      <Card className="">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-normal">Total Revenue</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">$15,231.89</div>
-          <p className="text-xs text-muted-foreground">
-            +20.1% from last month
-          </p>
-          <div className="h-[80px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 10,
-                  left: 10,
-                  bottom: 0,
-                }}
-              >
-                <Line
-                  type="monotone"
-                  strokeWidth={2}
-                  dataKey="revenue"
-                  activeDot={{
-                    r: 6,
-                    style: { fill: "var(--theme-primary)", opacity: 0.25 },
-                  }}
-                  style={
-                    {
-                      stroke: "var(--theme-primary)",
-                      "--theme-primary": `hsl(${
-                        theme?.cssVars[mode === "dark" ? "dark" : "light"]
-                          .primary
-                      })`,
-                    } as React.CSSProperties
-                  }
-                />
-              </LineChart>
-            </ResponsiveContainer>
+        <CardContent className="flex items-center gap-4 w-full">
+        <div className=" w-[40%]">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwyfHxhdmF0YXJ8ZW58MHwwfHx8MTY5MTg0NzYxMHww&ixlib=rb-4.0.3&q=80&w=1080"
+          className="w-28 group-hover:w-36 group-hover:h-36 h-28 object-center object-cover rounded-full transition-all duration-500 delay-500 transform"
+         />
           </div>
+       <div className="w-[60%] flex flex-col gap-3 lg:gap-1 items-center">
+       <h2 className=" font-bold text-xl lg:text-lg line-clamp-1">WASSWA COLLINE</h2>
+          <p className="text-xs text-muted-foreground">
+           Senior Dev At Desishub
+          </p>
+
+       </div>
+          
         </CardContent>
+
       </Card>
+
+
+
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-base font-normal">Subscriptions</CardTitle>

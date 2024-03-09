@@ -38,8 +38,8 @@ export default function DashBoardHead() {
           href: "/docs",
         },
         {
-          title: "Docs",
-          href: "/docs",
+          title: "Settings",
+          href: "/dashboard/settings",
         },
        
       ]

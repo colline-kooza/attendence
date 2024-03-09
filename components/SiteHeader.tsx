@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation"
 
 export function SiteHeader() {
   const pathName = usePathname()
-  if (pathName == "/dashboard" || pathName =="/dashboard/attendence" || pathName =="/dashboard/profile" || pathName =="/dashboard/registration"){
+  if (pathName == "/dashboard" || pathName =="/dashboard/attendence" || pathName =="/dashboard/profile" || pathName =="/dashboard/registration" || pathName =="/dashboard/settings"){
     return null
   }
   return (

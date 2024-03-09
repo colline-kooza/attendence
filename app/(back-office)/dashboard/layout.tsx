@@ -11,7 +11,7 @@ interface RootLayoutProps {
     <div className='sticky top-0 h-[10vh] z-[1000]'>
     <DashBoardHead/>
     </div>
-    <div className='p-4'>
+    <div className='p-4 mt-5'>
     {children}
     </div>
     </div>

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { SiteHeader } from "@/components/SiteHeader"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { ThemeProvider } from "@/components/Providers"
+import { Toaster } from "@/components/ui/toaster"
 
 
 export const metadata: Metadata = {
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
             <ThemeSwitcher />
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </>

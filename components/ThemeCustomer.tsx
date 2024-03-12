@@ -9,7 +9,7 @@ import {
   ResetIcon,
   SunIcon,
 } from "@radix-ui/react-icons"
-import template from "lodash.template"
+// import template from "lodash.template"
 import { Paintbrush } from "lucide-react"
 import { useTheme } from "next-themes"
 
@@ -256,11 +256,16 @@ function Customizer() {
                 className={`justify-start ${
                   isActive ? "border-2 border-primary" : ""
                 }`}
-                style={{
-                  "--theme-primary": `hsl(${
-                    theme?.activeColor[mode === "dark" ? "dark" : "light"]
-                  })`,
-                }}
+                
+                style={
+                  {
+                    "--theme-primary": `hsl(${
+                      theme?.activeColor[
+                        mode === "dark" ? "dark" : "light"
+                      ]
+                    })`,
+                  } as React.CSSProperties
+                }
               >
                 <span
                   className={`mr-1 flex h-5 w-5 shrink-0 -translate-x-1 items-center justify-center rounded-full bg-[--theme-primary] ${

@@ -1,15 +1,15 @@
 "use client"
+import { useState } from 'react'
 import CheckIn from '@/components/attendance/CheckIn'
 import CheckOut from '@/components/attendance/CheckOut'
 import Head from '@/components/attendance/Head'
 import TableTime from '@/components/attendance/TableTime'
-import React, { useState } from 'react'
 
-export default function page() {
+export default function Page() {
   const [arrival , setArrival]=useState(true)
 
-  function changeArrival(state:any){
-    setArrival(state)
+  function changeArrival(states:any){
+    setArrival(states)
   }
   return (
     <div className='lg:max-w-[50%] max-w-[95%]  mx-auto min-h-screen py-4 flex flex-col gap-8'>

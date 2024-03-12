@@ -1,9 +1,9 @@
 
-import { MainNavItem, SidebarNavItem } from "@/types/nav"
+// import { MainNavItem, SidebarNavItem } from "@/types/nav"
 
 interface DocsConfig {
-  mainNav: MainNavItem[]
-  sidebarNav: SidebarNavItem[]
+  mainNav: any[]
+  sidebarNav: any[]
 }
 
 export const docsConfig: DocsConfig = {

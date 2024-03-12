@@ -13,9 +13,6 @@ export default function Home() {
     <div className="">
     <Hero/>
     </div>
-    <div className="">
-  
-    </div>
    </div>
   );
 }

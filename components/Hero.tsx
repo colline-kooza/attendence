@@ -13,9 +13,9 @@ export default function Hero() {
      <div className="container relative">
       <PageHeader>
         <Announcement />
-        <PageHeaderHeading>Welcome to Desishub Student Portal</PageHeaderHeading>
+        <PageHeaderHeading>Desishub Student Attendance</PageHeaderHeading>
 <PageHeaderDescription>
-  Welcome to Desishub Student and Interns! Our platform offers a comprehensive solution for student attendance registration, With our accessible, customizable, and open-source approach, you can effortlessly track daily attendance, Explore our features and unleash the potential of modern attendance management in education.
+   You can effortlessly track daily attendance, Explore our features and unleash the potential of modern attendance management in education.
 </PageHeaderDescription>
         <PageActions>
           <Link href="/dashboard" className={cn(buttonVariants())}>

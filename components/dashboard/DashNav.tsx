@@ -12,26 +12,13 @@ export function DashNav() {
   const pathname = usePathname()
   const components: { title: string; href: string;}[] = [
     {
-      title: "Register",
-      href: "/dashboard/registration",
-    },
-    {
       title: "Attendance",
       href: "/dashboard/attendence",
     },
-    {
-      title: "Profile",
-      href: "/dashboard/profile",
-    },
-    {
-      title: "Tasks",
-      href: "/dashboard/profile",
-    }
   ]
   return (
     <div className="flex flex-col gap-3 ">
     <div className="lg:flex items-center hidden gap-8 ">
-    <img src="/dcsLogo.webp" alt="" className="h-10 w-15"/> 
    <div>
     <CommandMenu/>
    </div>

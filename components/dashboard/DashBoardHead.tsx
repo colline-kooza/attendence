@@ -23,35 +23,19 @@ import { BellDot } from "lucide-react"
 
 export default function DashBoardHead() {
     const components: { title: string; href: string;}[] = [
-        {
-          title: "Register",
-          href: "/dashboard/registration",
-        },
-        {
-          title: "Attendance",
-          href: "/dashboard/attendence",
-        }
+        // {
+        //   title: "Attendance",
+        //   href: "/dashboard/attendence",
+        // }
       ]
-      const sideLinks: { title: string; href: string;}[] = [
-        {
-          title: "Help",
-          href: "/docs",
-        },
-        {
-          title: "Settings",
-          href: "/dashboard/settings",
-        },
-       
-      ]
+   
   return (
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur h-[15vh] supports-[backdrop-filter]:bg-background/60 mt-8 ">
-        <div className="container flex h-14 max-w-screen-2xl items-center mb-4">
+        <div className="container flex h-14 max-w-screen-2xl items-center mb-4 ">
           <DashNav />
           <MobileNav />
-          <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-            <div className="w-full flex-1 md:w-auto md:flex-none">
-              <DashBoardLinks components={sideLinks}/>
-            </div>
+          <div className="flex flex-1 justify-end space-x-2 md:justify-end">
+         
             <nav className="flex items-center">
               <Link
                 href=""

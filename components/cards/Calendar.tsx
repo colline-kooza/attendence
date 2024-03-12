@@ -1,25 +1,26 @@
 "use client"
+import { addDays, startOfWeek, endOfWeek } from "date-fns";
+import { Card, CardContent } from "../ui/card";
+import { Calendar } from "../ui/calendar";
 
-import { addDays } from "date-fns"
-import { Card, CardContent } from "../ui/card"
-import { Calendar } from "../ui/calendar"
-
-const start = new Date(2024, 5, 5)
+const currentDate = new Date();
+const startOfWeekDate = startOfWeek(currentDate); 
+const endOfWeekDate = endOfWeek(currentDate);
 
 export function CardsCalendar() {
   return (
-    <Card className="max-w-[100%]">
-      <CardContent className="p-1">
+    <Card className="max-w-[100%] h-[100%]">
+      <CardContent className="p-1 ">
         <Calendar
           numberOfMonths={1}
           mode="range"
-          defaultMonth={start}
+          defaultMonth={startOfWeekDate}
           selected={{
-            from: start,
-            to: addDays(start, 8),
+            from: startOfWeekDate,
+            to: endOfWeekDate,
           }}
         />
       </CardContent>
     </Card>
-  )
+  );
 }

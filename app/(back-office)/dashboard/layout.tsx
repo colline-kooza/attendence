@@ -8,7 +8,7 @@ interface RootLayoutProps {
   export default function Layout({ children }:RootLayoutProps) {
     return (
     <div>
-    <div className='sticky top-0 h-[10vh] z-[1000]'>
+    <div className='sticky top-0 h-[10vh]'>
     <DashBoardHead/>
     </div>
     <div className='p-4 mt-5'>

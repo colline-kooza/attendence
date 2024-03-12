@@ -1,109 +1,99 @@
 "use client"
+import { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Separator } from "../ui/separator";
+import getData from "@/utils/getData";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Button } from "../ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
-import { Input } from "../ui/input"
-import { Label } from "../ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { Separator } from "../ui/separator"
+interface Student {
+  id: string;
+  name: string;
+  email: string;
+  checkIn: string;
+}
 
+interface Attendance {
+  id: string;
+  studentId: string;
+  checkIn: string;
+}
 
-export function CardsShare() {
+export default function CardsShare() {
+  const [latestArrivals, setLatestArrivals] = useState<Student[]>([]);
+
+  useEffect(() => {
+    const fetchLatestArrivals = async () => {
+      const checkOut: Attendance[] = await getData("check-out");
+      const students: Student[] = await getData("students");
+
+      const latestArrivalsPerDay: Record<string, Attendance[]> = {};
+
+      checkOut.forEach((attendance) => {
+        const date = new Date(attendance.checkIn).toDateString();
+        if (!latestArrivalsPerDay[date] || latestArrivalsPerDay[date][0].checkIn < attendance.checkIn) {
+          latestArrivalsPerDay[date] = [attendance];
+        } else if (latestArrivalsPerDay[date][0].checkIn === attendance.checkIn) {
+          latestArrivalsPerDay[date].push(attendance);
+        }
+      });
+
+      const latestArrivalsData: Student[] = Object.values(latestArrivalsPerDay).flatMap((attendances) => {
+        return attendances.map((attendance) => {
+          const student = students.find((student) => student.id === attendance.studentId);
+          if (student) {
+            return {
+              id: student.id,
+              name: student.name,
+              email: student.email,
+              checkIn: attendance.checkIn 
+            };
+          }
+          return null;
+        }).filter(Boolean) as Student[];
+      });
+      
+      setLatestArrivals(latestArrivalsData);
+    };
+
+    fetchLatestArrivals();
+  }, []);
+
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle>Share this document</CardTitle>
+        <CardTitle>Latest Arrivals Today</CardTitle>
         <CardDescription>
-          Anyone with the link can view this document.
+          Latest Desishub Arrivals Today and their time.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex space-x-2">
-          <Label htmlFor="link" className="sr-only">
-            Link
-          </Label>
-          <Input
-            id="link"
-            value="http://example.com/link/to/document"
-            readOnly
-          />
-          <Button className="shrink-0">Copy Link</Button>
-        </div>
         <Separator className="my-4" />
         <div className="space-y-4">
-          <h4 className="text-sm font-medium">People with access</h4>
+          <h4 className="text-sm font-medium">Desishub Students</h4>
           <div className="grid gap-6">
-            <div className="flex items-center justify-between space-x-4">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src="/avatars/03.png" alt="Image" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium leading-none">
-                    Olivia Martin
-                  </p>
-                  <p className="text-sm text-muted-foreground">m@example.com</p>
-                </div>
-              </div>
-              <Select defaultValue="edit">
-                <SelectTrigger className="ml-auto w-[110px]" aria-label="Edit">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="edit">Can edit</SelectItem>
-                  <SelectItem value="view">Can view</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center justify-between space-x-4">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src="/avatars/05.png" alt="Image" />
-                  <AvatarFallback>IN</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium leading-none">
-                    Isabella Nguyen
-                  </p>
-                  <p className="text-sm text-muted-foreground">b@example.com</p>
-                </div>
-              </div>
-              <Select defaultValue="view">
-                <SelectTrigger className="ml-auto w-[110px]" aria-label="Edit">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="edit">Can edit</SelectItem>
-                  <SelectItem value="view">Can view</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center justify-between space-x-4">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src="/avatars/01.png" alt="Image" />
-                  <AvatarFallback>SD</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium leading-none">
-                    Sofia Davis
-                  </p>
-                  <p className="text-sm text-muted-foreground">p@example.com</p>
-                </div>
-              </div>
-              <Select defaultValue="view">
-                <SelectTrigger className="ml-auto w-[110px]" aria-label="Edit">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="edit">Can edit</SelectItem>
-                  <SelectItem value="view">Can view</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+  {latestArrivals.length === 0 ? (
+    <p>No arrivals yet today.</p>
+  ) : (
+    latestArrivals.map((student) => (
+      <div key={`${student.id}-${student.checkIn}`} className="flex items-center justify-between space-x-4">
+        <div className="flex items-center space-x-4">
+          <Avatar>
+            <AvatarImage src={`/avatars/${student.id}.png`} alt={student.name} />
+            <AvatarFallback>{student.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="text-sm font-medium leading-none">{student.name}</p>
+            <p className="text-sm text-muted-foreground">{student.email}</p>
           </div>
+        </div>
+        <div>
+          <p className="text-sm text-muted-foreground">{new Date(student.checkIn).toLocaleTimeString()}</p>
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
         </div>
       </CardContent>
     </Card>

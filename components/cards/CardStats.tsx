@@ -1,53 +1,76 @@
+"use client"
 import { useTheme } from "next-themes"
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer } from "recharts"
 
 import { useConfig } from "@/hooks/use-config"
 import { ThemesTabs } from "../ThemeTabs"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { themes } from "@/registery/themes"
+// import { themes } from "@/registery/themes"
+import { useEffect, useState } from "react"
+import getData from "@/utils/getData"
 
 
-const data = [
-  {
-    revenue: 10400,
-    subscription: 240,
-  },
-  {
-    revenue: 14405,
-    subscription: 300,
-  },
-  {
-    revenue: 9400,
-    subscription: 200,
-  },
-  {
-    revenue: 8200,
-    subscription: 278,
-  },
-  {
-    revenue: 7000,
-    subscription: 189,
-  },
-  {
-    revenue: 9600,
-    subscription: 239,
-  },
-  {
-    revenue: 11244,
-    subscription: 278,
-  },
-  {
-    revenue: 26475,
-    subscription: 189,
-  },
-]
-
+interface AttendanceRecord {
+  id: string;
+  studentId: string;
+  checkIn: string;
+  checkOut: string;
+  createdAt: string;
+  updatedAt: string;
+}
+const themes = [
+  { name: "light", primaryColor: "#ea580c" },
+  { name: "dark", primaryColor: "#e11d48" }
+];
 export function CardsStats() { 
-    const { theme: mode } = useTheme();
-    const [config] = useConfig()
+  const { theme: mode } = useTheme();
+  // Assuming you have already set up your theme config to retrieve the correct theme
+  const theme = themes.find((theme) => theme.name === mode);
+  const [config] = useConfig()
 
-    const theme = themes.find((theme) => theme.name === config.theme)
+  // const theme = themes.find((theme) => theme.name === config.theme)
+  const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
 
+  useEffect(() => {
+    async function fetchAttendance() {
+      try {
+        const fetchedAttendance: AttendanceRecord[] = await getData("/check-in");
+        setAttendance(fetchedAttendance);
+      } catch (error) {
+        console.error("Failed to fetch attendance:", error);
+      }
+    }
+
+    fetchAttendance();
+  }, []);
+
+  const calculateTotalHours = () => {
+    let totalHours = 0;
+    attendance.forEach(record => {
+      const checkInTime = new Date(record.checkIn).getTime();
+      const checkOutTime = new Date(record.checkOut).getTime();
+      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+      totalHours += hoursWorked;
+    });
+    return totalHours;
+  };
+
+  const totalHours = calculateTotalHours();
+  const averageTime = totalHours / 7;
+  const calculateWeeklyHours = () => {
+    const weeklyHours = Array(7).fill(0); 
+    attendance.forEach(record => {
+      const checkInDate = new Date(record.checkIn);
+      const dayOfWeek = checkInDate.getDay()
+      const checkOutTime = new Date(record.checkOut).getTime();
+      const checkInTime = checkInDate.getTime();
+      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60); 
+      weeklyHours[dayOfWeek] += hoursWorked; 
+    });
+    return weeklyHours;
+  };
+  
+  const weeklyHoursData = calculateWeeklyHours();
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
 
@@ -57,13 +80,13 @@ export function CardsStats() {
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         </CardHeader>
         <CardContent className="flex items-center gap-4 w-full">
-        <div className=" w-[40%]">
+        <div className=" w-[40%] ">
           <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwyfHxhdmF0YXJ8ZW58MHwwfHx8MTY5MTg0NzYxMHww&ixlib=rb-4.0.3&q=80&w=1080"
-          className="w-28 group-hover:w-36 group-hover:h-36 h-28 object-center object-cover rounded-full transition-all duration-500 delay-500 transform"
+          className="w-28 group-hover:w-36 group-hover:h-36 h-28 object-center object-cover -z-40 rounded-full transition-all duration-500 delay-500 transform"
          />
           </div>
-       <div className="w-[60%] flex flex-col gap-3 lg:gap-1 items-center">
-       <h2 className=" font-bold text-xl lg:text-lg line-clamp-1">WASSWA COLLINE</h2>
+       <div className="w-[60%] flex flex-col gap-2 lg:gap-1 items-center justify-center">
+       <h2 className=" font-bold text-[14px] md:text-xl lg:text-lg text-center">WASSWA COLLINE </h2>
           <p className="text-xs text-muted-foreground">
            Senior Dev At Desishub
           </p>
@@ -79,34 +102,43 @@ export function CardsStats() {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-normal">Subscriptions</CardTitle>
+          <CardTitle className="text-base font-normal">Weekly Attendance</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">+2350</div>
+          <div className="text-2xl font-bold">{totalHours.toFixed(2)} hours</div>
           <p className="text-xs text-muted-foreground">
-            +180.1% from last month
+          Average time: {averageTime.toFixed(2)} hours per day
           </p>
           <div className="mt-4 h-[80px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={data}>
-                <Bar
-                  dataKey="subscription"
-                  style={
-                    {
-                      fill: "var(--theme-primary)",
-                      opacity: 1,
-                      "--theme-primary": `hsl(${
-                        theme?.cssVars[mode === "dark" ? "dark" : "light"]
-                          .primary
-                      })`,
-                    } as React.CSSProperties
-                  }
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={weeklyHoursData.map((hours, index) => ({ day: index, hours }))}>
+            <Bar
+              dataKey="hours"
+              fill={theme?.primaryColor || "#007bff"} 
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
         </CardContent>
       </Card>
     </div>
   )
 }
+
+
+
+{/* <Card>
+<CardTitle className="text-base font-normal">Weekly Attendance</CardTitle>
+<div className="text-2xl font-bold">{totalHours.toFixed(2)} hours</div>
+<p className="text-xs text-muted-foreground">Average time: {averageTime.toFixed(2)} hours per day</p>
+<div className="mt-4 h-[200px]">
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart data={[{ hours: totalHours }]}>
+      <Bar
+        dataKey="hours"
+        style={{ fill: "var(--theme-primary)", opacity: 1 }}
+      />
+    </BarChart>
+  </ResponsiveContainer>
+</div>
+</Card> */}

@@ -1,45 +1,83 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
-
 export async function POST(request: any) {
-  const { studentId } =request.body;
-
-  if (!studentId) {
-    return NextResponse.json("")
-  }
+  const studentId = "65f05e9ef78f54ecb68de98a";
 
   try {
     const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0); // Set to today's start time
+    todayStart.setHours(0, 0, 0, 0);
 
     const todayEnd = new Date();
-    todayEnd.setHours(23, 59, 59, 999); // Set to today's end time
+    todayEnd.setHours(23, 59, 59, 999);
 
-    const recordToUpdate = await db.attendanceRecord.findFirst({
+    // Check if the user has already checked out today
+    const existingCheckoutRecord = await db.attendanceRecord.findFirst({
+      where: {
+        studentId,
+        checkOut: {
+          gte: todayStart,
+          lte: todayEnd,
+        },
+        
+      },
+    });
+      // console.log(existingCheckoutRecord)
+    if (existingCheckoutRecord) {
+      return NextResponse.json({ message: 'Student has already checked out today' });
+    }
+
+    // Check if the user has checked in today
+    const existingCheckInRecord = await db.attendanceRecord.findFirst({
       where: {
         studentId,
         checkIn: {
           gte: todayStart,
           lte: todayEnd,
         },
-        checkOut: null,
+        // checkOut: null, // Check if the user has checked in but not checked out
       },
     });
-
-    if (!recordToUpdate) {
+    //  console.log(existingCheckInRecord)
+    if (!existingCheckInRecord) {
       return NextResponse.json({ message: 'Student has not checked in today' });
     }
 
+    // Update the check-out time
     const updatedRecord = await db.attendanceRecord.update({
-      where: { id: recordToUpdate.id },
-      data: { checkOut: new Date() },
+      where: { id: existingCheckInRecord.id },
+      data: {
+        checkOut: new Date() ,
+        status: "present",
+      },
     });
 
+    // console.log(updatedRecord);
     return NextResponse.json(updatedRecord);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Internal server error' });
+  }
+}
+export async function GET(request: any) {
+
+  try {
+    const attendance = await db.attendanceRecord.findMany({
+      orderBy: {
+        createdAt: "desc", 
+      },
+    });
+    return NextResponse.json(attendance);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      {
+        error,
+        message: "Failed to fetch attendances",
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+model Student {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String
+  password    String?
+  attendance  AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  student    Student   @relation(fields: [studentId], references: [id])
+  studentId  String    @db.ObjectId
+  checkIn    DateTime  @default(now())
+  checkOut   DateTime?
+  status     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}

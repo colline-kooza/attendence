@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader"
 import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { ThemeProvider } from "@/components/Providers"
 import { Toaster } from "@/components/ui/toaster"
+import { SiteFooter } from "@/components/Footer"
 
 
 export const metadata: Metadata = {
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             "min-h-screen bg-background font-sans antialiased",
           )}
         >
+              <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -45,7 +47,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
             <ThemeSwitcher />
           </ThemeProvider>
-          <Toaster />
+      
+          <SiteFooter/>
         </body>
       </html>
     </>

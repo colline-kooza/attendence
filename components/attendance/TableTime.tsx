@@ -1,50 +1,105 @@
-import React from 'react'
-import { Card, CardTitle } from '../ui/card'
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '../ui/table'
+"use client"
+import React, { useEffect, useState } from 'react';
+import { Card, CardTitle } from '../ui/card';
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '../ui/table';
+import getData from '@/utils/getData';
+
+interface AttendanceRecord {
+  id: string;
+  studentId: string;
+  checkIn: string;
+  checkOut: string;
+  createdAt: string;
+  updatedAt: string;
+  status?: string;
+}
 
 export default function TableTime() {
-    const attendanceRecords = [
-        { date: "2024-03-08", checkIn: "08:00", checkOut: "17:00", totalTime: "09:00" },
-        { date: "2024-03-07", checkIn: "08:15", checkOut: "16:45", totalTime: "08:30" },
-        { date: "2024-03-06", checkIn: "08:30", checkOut: "17:15", totalTime: "08:45" },
-        { date: "2024-03-05", checkIn: "09:00", checkOut: "18:00", totalTime: "09:00" },
-        { date: "2024-03-04", checkIn: "08:45", checkOut: "17:30", totalTime: "08:45" },
-      ];
+  const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
+
+  useEffect(() => {
+    async function fetchAttendance() {
+      try {
+        const fetchedAttendance: AttendanceRecord[] = await getData("/check-in");
+        setAttendance(fetchedAttendance);
+      } catch (error) {
+        console.error("Failed to fetch attendance:", error);
+      }
+    }
+
+    fetchAttendance();
+  }, []);
+
+  const calculateTotalTime = () => {
+    let overallTotalTime = 0;
+    return attendance.map(record => {
+      let checkIn = "";
+      let checkOut = "";
+      let totalTime = "null";
+
+      if (record.checkIn && record.status !== "absent") {
+        checkIn = new Date(record.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+      if (record.checkOut && record.status !== "absent") {
+        checkOut = new Date(record.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+      if (record.checkIn && record.checkOut && record.status !== "absent") {
+        const totalTimeInMilliseconds = new Date(record.checkOut).getTime() - new Date(record.checkIn).getTime();
+        totalTime = new Date(totalTimeInMilliseconds).toISOString().substr(11, 8);
+        overallTotalTime += totalTimeInMilliseconds;
+      }
+     
+      // Include status in the returned object
+      const status = record.status === "absent" ? "Absent" : "present";
       
+      return {
+        date: new Date(record.checkIn).toLocaleDateString(),
+        checkIn,
+        checkOut,
+        totalTime,
+        status
+      };
+    });
+  };
+
+  const attendanceRecords = calculateTotalTime();
+
+  const overallTotalTime = new Date(attendance.reduce((acc, curr) => acc + (new Date(curr.checkOut).getTime() - new Date(curr.checkIn).getTime()), 0)).toISOString().substr(11, 8);
+  
   return (
     <div>
-     <Card>
-     <CardTitle className='flex items-center justify-center mt-3 mb-5 text-xl font-bold'>My Attendence</CardTitle>
-     <Table>
-  <TableCaption>A list of your recent attendance records.</TableCaption>
-  <TableHeader>
-    <TableRow>
-      <TableHead>Date</TableHead>
-      <TableHead>Check In</TableHead>
-      <TableHead>Check Out</TableHead>
-      <TableHead className="text-right">Total Time</TableHead>
-    </TableRow>
-  </TableHeader>
-  <TableBody>
-    {attendanceRecords.map((record) => (
-      <TableRow key={record.date}>
-        <TableCell>{record.date}</TableCell>
-        <TableCell>{record.checkIn}</TableCell>
-        <TableCell>{record.checkOut}</TableCell>
-        <TableCell className="text-right">{record.totalTime}</TableCell>
-      </TableRow>
-    ))}
-  </TableBody>
-  <TableFooter>
-    <TableRow>
-      <TableCell colSpan={3}>Total</TableCell>
-      <TableCell className="text-right">23 Hours </TableCell>
-    </TableRow>
-  </TableFooter>
-</Table>
-
-     </Card>
-
+      <Card>
+        <CardTitle className='flex items-center justify-center mt-3 mb-5 text-xl font-bold'>My Attendance</CardTitle>
+        <Table >
+          <TableCaption>A list of your recent attendance records.</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Arrival</TableHead>
+              <TableHead>Departure</TableHead>
+              <TableHead>Status</TableHead> {/* Add Status column header */}
+              <TableHead className="text-right">Total</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {attendanceRecords.map((record, index) => (
+              <TableRow key={index}>
+                <TableCell>{record.date}</TableCell>
+                <TableCell>{record.checkIn}</TableCell>
+                <TableCell>{record.checkOut}</TableCell>
+                <TableCell>{record.status}</TableCell> 
+                <TableCell className="text-right">{record.totalTime}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={4}>Overall Total</TableCell>
+              <TableCell className="text-right">{overallTotalTime}</TableCell>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </Card>
     </div>
-  )
+  );
 }

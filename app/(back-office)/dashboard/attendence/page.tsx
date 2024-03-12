@@ -18,12 +18,11 @@ export default function page() {
    </div>
     {
       arrival ? (
-        <CheckIn />
+      <CheckIn />
       ):(
       <CheckOut/>
       )
     }
-
     <hr />
     <TableTime/>
     </div>

@@ -2,7 +2,7 @@ import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: any) {
-  const studentId = "65f05e9ef78f54ecb68de98a";
+  const studentId = "65efedc3f78f54ecb68de979";
 
   try {
     const checkInTime = new Date();
@@ -78,7 +78,7 @@ export async function POST(request: any) {
 }
 
 export async function GET(request: any) {
-  const userId = "65f05e9ef78f54ecb68de98a"; 
+  const userId = "65efef2ef78f54ecb68de97e"; 
 
   try {
     const attendance = await db.attendanceRecord.findMany({

@@ -24,3 +24,10 @@ model AttendanceRecord {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
+
+model Gallery {
+    id         String    @id @default(auto()) @map("_id") @db.ObjectId
+    images     String []
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime  @updatedAt
+}

@@ -17,9 +17,10 @@ export default function CheckOut() {
   async function handleCheckOut() {
     setIsLoading(true);
     const userId = "98845899489458";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     try {
-      const response = await fetch('http://localhost:3000/api/check-out', {
+      const response = await fetch(`${baseUrl}/api/check-out`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

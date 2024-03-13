@@ -18,9 +18,10 @@ export default function CheckIn() {
 
   async function handleCheckIn() {
     setIsLoading(true);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
     try {
-      const response = await fetch('http://localhost:3000/api/check-in', {
+      const response = await fetch(`${baseUrl}/api/check-in`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import { UploadButton } from "@/utils/uploadthing";
 import { Button } from "../ui/button";

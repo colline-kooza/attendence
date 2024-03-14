@@ -2,7 +2,7 @@ import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: any) {
-  const studentId = "65efedc3f78f54ecb68de979";
+  const studentId = "65f2057346d8e8cd79aca032";
 
   try {
     const todayStart = new Date();

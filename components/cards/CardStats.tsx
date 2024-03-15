@@ -52,26 +52,31 @@ export function CardsStats() {
 
   const calculateTotalHours = () => {
     let totalHours = 0;
-    attendance.forEach(record => {
+    attendance.forEach((record) => {
       const checkInTime = new Date(record.checkIn).getTime();
       const checkOutTime = new Date(record.checkOut).getTime();
-      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
-      totalHours += hoursWorked;
+      if (checkOutTime > checkInTime) {
+        const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+        totalHours += hoursWorked;
+      }
     });
     return totalHours;
   };
 
   const totalHours = calculateTotalHours();
   const averageTime = totalHours / 7;
+
   const calculateWeeklyHours = () => {
-    const weeklyHours = Array(7).fill(0); 
-    attendance.forEach(record => {
+    const weeklyHours = Array(7).fill(0);
+    attendance.forEach((record) => {
       const checkInDate = new Date(record.checkIn);
-      const dayOfWeek = checkInDate.getDay()
+      const dayOfWeek = checkInDate.getDay();
       const checkOutTime = new Date(record.checkOut).getTime();
       const checkInTime = checkInDate.getTime();
-      const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60); 
-      weeklyHours[dayOfWeek] += hoursWorked; 
+      if (checkOutTime > checkInTime) {
+        const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+        weeklyHours[dayOfWeek] += hoursWorked;
+      }
     });
     return weeklyHours;
   };
@@ -112,26 +117,26 @@ export function CardsStats() {
 
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-base font-normal">Weekly Attendance</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">{totalHours.toFixed(2)} hours</div>
-          <p className="text-xs text-muted-foreground">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-base font-normal">Weekly Attendance</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">{totalHours.toFixed(2)} hours</div>
+        <p className="text-xs text-muted-foreground">
           Average time: {averageTime.toFixed(2)} hours per day
-          </p>
-          <div className="mt-4 h-[80px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={weeklyHoursData.map((hours, index) => ({ day: index, hours }))}>
-            <Bar
-              dataKey="hours"
-              fill={theme?.primaryColor || "#007bff"} 
-            />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-        </CardContent>
-      </Card>
+        </p>
+        <div className="mt-4 h-[80px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={weeklyHoursData.map((hours, index) => ({ day: index, hours }))}>
+              <Bar
+                dataKey="hours"
+                fill={theme?.primaryColor || "#007bff"}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
     </div>
   )
 }

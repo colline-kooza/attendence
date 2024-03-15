@@ -52,8 +52,10 @@ export async function CardsMetric() {
           }
           const checkInTime = new Date(entry.checkIn).getTime();
           const checkOutTime = new Date(entry.checkOut).getTime();
-          const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
-          groupedData[date].totalHours += hoursWorked;
+          if (checkOutTime > checkInTime) { // Check if check-out time is after check-in time
+            const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+            groupedData[date].totalHours += hoursWorked;
+          }
         });
         const dataArray: GroupedData[] = Object.values(groupedData);
         setAttendanceData(dataArray);
@@ -61,10 +63,10 @@ export async function CardsMetric() {
         console.error("Failed to fetch attendance data:", error);
       }
     }
-
+  
     fetchData();
   }, []);
-
+  
   return (
     <Card>
       <CardHeader>

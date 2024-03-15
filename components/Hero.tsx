@@ -18,7 +18,7 @@ export default async function Hero() {
   //   </h1>
    
   // </div>
-   <div>
+   <div className="overflow-hidden">
      <div className="container relative  ">
       <PageHeader>
         <Announcement />

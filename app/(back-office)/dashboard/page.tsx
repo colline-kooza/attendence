@@ -7,7 +7,7 @@ import React from 'react'
 
 export default async function page() {
   const session = await getCurrentUser()
-  console.log(session)
+  // console.log(session)
   return (
     <>
     {

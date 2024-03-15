@@ -10,8 +10,12 @@ export const docsConfig: DocsConfig = {
       href: "/gallery",
     },
     {
-      title: "Resources",
-      href: "/resources",
+      title: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      title: "Attendance",
+      href: "/dashboard/attendence",
     },
     {
       title: "Announcements",

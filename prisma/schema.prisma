@@ -17,7 +17,7 @@ model Student {
   name        String
   email       String
   password    String
-  image       String?
+  image       String
   emailVerified  Boolean @default(false)
   role        Attendance @default(STUDENT)
   emailVerifiedDate  DateTime  @default(now())

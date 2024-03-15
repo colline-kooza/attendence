@@ -12,6 +12,12 @@ export const ourFileRouter = {
     // This code RUNS ON YOUR SERVER after upload
     // console.log("Metadata", metadata);
   }),
+  profileImage: f({
+    image: { maxFileSize: "2MB", },
+  }).onUploadComplete(async ({ metadata, file }) => {
+    // This code RUNS ON YOUR SERVER after upload
+    // console.log("Metadata", metadata);
+  }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

@@ -9,6 +9,7 @@ interface Student {
   id: string;
   name: string;
   email: string;
+  image: string;
   checkIn: string;
 }
 
@@ -20,7 +21,7 @@ interface Attendance {
 
 export default function CardsShare() {
   const [latestArrivals, setLatestArrivals] = useState<Student[]>([]);
-
+// console.log(latestArrivals)
   useEffect(() => {
     const fetchLatestArrivals = async () => {
       const checkOut: Attendance[] = await getData("check-out");
@@ -40,11 +41,13 @@ export default function CardsShare() {
       const latestArrivalsData: Student[] = Object.values(latestArrivalsPerDay).flatMap((attendances) => {
         return attendances.map((attendance) => {
           const student = students.find((student) => student.id === attendance.studentId);
+          console.log(student)
           if (student) {
             return {
               id: student.id,
               name: student.name,
               email: student.email,
+              image: student.image,
               checkIn: attendance.checkIn 
             };
           }
@@ -78,7 +81,7 @@ export default function CardsShare() {
       <div key={`${student.id}-${student.checkIn}`} className="flex items-center justify-between space-x-4">
         <div className="flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src={`/avatars/${student.id}.png`} alt={student.name} />
+            <AvatarImage src={student.image} alt={student.name} />
             <AvatarFallback>{student.name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
           <div>

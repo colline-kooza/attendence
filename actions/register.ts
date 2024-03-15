@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export async function saveData(data: StudentProps) {
     try {
-        const { name, email, password } = data;
+        const { name, email, password , image } = data;
 
         const hashedPassword = await hash(password, 10);
 
@@ -23,6 +23,7 @@ export async function saveData(data: StudentProps) {
                 name,
                 email,
                 password:hashedPassword,
+                image
             },
         });
   // console.log(newStudent)

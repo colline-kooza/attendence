@@ -83,7 +83,7 @@ export async function POST(request: any) {
 export async function GET(request: any) {
   const session = await getCurrentUser()
   const userId= (session as {id:string}).id
-  console.log(userId)
+  // console.log(userId)
   try {
     const attendance = await db.attendanceRecord.findMany({
       where: {

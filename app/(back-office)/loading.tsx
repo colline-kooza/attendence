@@ -41,9 +41,9 @@ export default function Loading() {
         </div>
       </div>
       <div className="hidden md:block">
-        <Skeleton className="h-[218px] w-full" />
+        {/* <Skeleton className="h-[218px] w-full" /> */}
       </div>
-      <Skeleton className="h-[218px] w-full" />
+      {/* <Skeleton className="h-[218px] w-full" /> */}
     </div>
   </div>
   )

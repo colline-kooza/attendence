@@ -92,7 +92,7 @@ export function CardsStats() {
          />
           </div>
        <div className="w-[60%] flex flex-col gap-2 lg:gap-1 items-center justify-center">
-       <h2 className=" font-bold text-[14px] md:text-xl lg:text-xl text-center">
+       <h2 className=" font-bold text-lg md:text-xl lg:text-xl text-center">
         {
           session?.user?.name
         }

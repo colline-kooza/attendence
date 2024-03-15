@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 // import { themes } from "@/registery/themes"
 import { useEffect, useState } from "react"
 import getData from "@/utils/getData"
+import { useSession } from "next-auth/react"
 
 
 interface AttendanceRecord {
@@ -23,6 +24,9 @@ const themes = [
   { name: "dark", primaryColor: "#e11d48" }
 ];
 export function CardsStats() { 
+  const { data: session, status} = useSession()
+
+  console.log(session)
   const { theme: mode } = useTheme();
   // Assuming you have already set up your theme config to retrieve the correct theme
   const theme = themes.find((theme) => theme.name === mode);
@@ -86,7 +90,12 @@ export function CardsStats() {
          />
           </div>
        <div className="w-[60%] flex flex-col gap-2 lg:gap-1 items-center justify-center">
-       <h2 className=" font-bold text-[14px] md:text-xl lg:text-lg text-center">WASSWA COLLINE </h2>
+       <h2 className=" font-bold text-[14px] md:text-xl lg:text-2xl text-center">
+        {
+          session?.user?.name
+        }
+        
+         </h2>
           <p className="text-xs text-muted-foreground">
            Senior Dev At Desishub
           </p>

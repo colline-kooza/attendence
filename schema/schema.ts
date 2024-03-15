@@ -17,3 +17,16 @@ export const studentFormSchema=z.object({
     message:"Password must have a minimum of 3 characters"
    }),
 })
+export const LoginFormSchema=z.object({
+ 
+   email:z.string({
+    required_error:"Email is required"
+   }).min(3,{
+    message:"Email must have a minimum of 3 characters"
+   }),
+   password:z.string({
+    required_error:"Password is required"
+   }).min(3,{
+    message:"Password must have a minimum of 3 characters"
+   }),
+})

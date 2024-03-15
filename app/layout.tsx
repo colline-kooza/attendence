@@ -6,6 +6,7 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher"
 import { ThemeProvider } from "@/components/Providers"
 import { Toaster } from "@/components/ui/toaster"
 import { SiteFooter } from "@/components/Footer"
+import AuthProvider from "@/context/page"
 
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+ 
   return (
     <>
       <html lang="en" suppressHydrationWarning>
@@ -32,6 +34,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             "min-h-screen bg-background font-sans antialiased",
           )}
         >
+                <AuthProvider>
               <Toaster />
           <ThemeProvider
             attribute="class"
@@ -49,6 +52,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </ThemeProvider>
       
           <SiteFooter/>
+          </AuthProvider>
+
         </body>
       </html>
     </>

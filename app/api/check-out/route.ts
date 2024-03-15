@@ -1,9 +1,13 @@
+import { getCurrentUser } from '@/lib/authProvider';
 import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: any) {
-  const studentId = "65f2057346d8e8cd79aca032";
 
+  // const studentId = "65f2057346d8e8cd79aca032";
+  const session = await getCurrentUser()
+  const studentId = (session as {id:string}).id
+  console.log(studentId )
   try {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);

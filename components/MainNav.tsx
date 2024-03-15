@@ -29,7 +29,7 @@ export function MainNav() {
         </Link>
 
         <Link
-          href="/themes"
+          href="/announcements"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname?.startsWith("/themes")
@@ -41,7 +41,7 @@ export function MainNav() {
         </Link>
 
         <Link
-          href="/examples"
+          href="/gallery"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname?.startsWith("/examples")

@@ -6,12 +6,25 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+enum Attendance{
+  ADMIN
+  STUDENT
+}
+
 model Student {
   id          String            @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   email       String
-  password    String?
+  password    String
+  image       String?
+  emailVerified  Boolean @default(false)
+  role        Attendance @default(STUDENT)
+  emailVerifiedDate  DateTime  @default(now())
+  verifiactionRequestCount  Int?
   attendance  AttendanceRecord[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model AttendanceRecord {

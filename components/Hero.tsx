@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button";
 import { Announcement } from "./Annoucements";
 import { SparklesCore } from "./ui/sparkles";
+import { getCurrentUser } from "@/lib/authProvider";
 
 
-export default function Hero() {
+export default async function Hero() {
+  
   return (
   //   <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
   //   <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
@@ -17,7 +19,7 @@ export default function Hero() {
    
   // </div>
    <div>
-     <div className="container relative">
+     <div className="container relative  ">
       <PageHeader>
         <Announcement />
         <PageHeaderHeading>Desishub Student Attendance</PageHeaderHeading>

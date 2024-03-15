@@ -40,11 +40,11 @@ export function CardsCreateAccount() {
       toast({
         description: "Your have successfully registered.",
       })
-      router.push("/dashboard");
+      router.push("/login");
     } catch (error) {
       setIsLoading(false);
       toast({
-        description: "Ooops Something Went Wrong.",
+        description: "Ooops Check Your Credentials.",
       })
       console.log(error);
     }

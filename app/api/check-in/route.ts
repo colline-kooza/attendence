@@ -1,9 +1,12 @@
+import { getCurrentUser } from '@/lib/authProvider';
 import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: any) {
-  const studentId = "65f2057346d8e8cd79aca032";
-
+  // const studentId = "65f2057346d8e8cd79aca032";
+  const session = await getCurrentUser()
+  const studentId= (session as {id:string}).id
+  console.log(studentId)
   try {
     const checkInTime = new Date();
 
@@ -78,8 +81,9 @@ export async function POST(request: any) {
 }
 
 export async function GET(request: any) {
-  const userId = "65f2057346d8e8cd79aca032"; 
-
+  const session = await getCurrentUser()
+  const userId= (session as {id:string}).id
+  console.log(userId)
   try {
     const attendance = await db.attendanceRecord.findMany({
       where: {

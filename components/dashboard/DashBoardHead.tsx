@@ -36,7 +36,7 @@ export default function DashBoardHead() {
    <>
    {
     session ? (
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur h-[15vh] supports-[backdrop-filter]:bg-background/60 mt-8 ">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur h-[9vh] lg:h-[15vh] supports-[backdrop-filter]:bg-background/60 mt-8 ">
       <div className="container flex h-14 max-w-screen-2xl items-center mb-4 ">
         <DashNav />
         <MobileNav />

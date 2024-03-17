@@ -11,7 +11,7 @@ import { CardsReportIssue } from "./Report-issue";
 
 export default function MainCards() {
   return (
-    <div className="md:grids-col-2 grid md:gap-4 lg:grid-cols-10 xl:grid-cols-11 xl:gap-4 w-full mt-5 overflow-hidden">
+    <div className="md:grids-col-2 grid md:gap-4 lg:grid-cols-10 xl:grid-cols-11 xl:gap-4 w-full mt-2 overflow-hidden">
       <div className="space-y-4 lg:col-span-8 xl:col-span-6 xl:space-y-4">
         <CardsStats />
         

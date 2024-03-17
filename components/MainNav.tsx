@@ -32,7 +32,7 @@ export function MainNav() {
           href="/announcements"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/themes")
+            pathname?.startsWith("/announcements")
               ? "text-foreground"
               : "text-foreground/60"
           )}
@@ -51,6 +51,18 @@ export function MainNav() {
         >
         Gallery
         </Link>
+{/* 
+        <Link
+          href="/view-list"
+          className={cn(
+            "transition-colors hover:text-foreground/80",
+            pathname?.startsWith("/view-list")
+              ? "text-foreground"
+              : "text-foreground/60"
+          )}
+        >
+      view-list
+        </Link> */}
       </nav>
     </div>
   )

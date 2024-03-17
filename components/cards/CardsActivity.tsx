@@ -12,6 +12,8 @@ import { ThemesTabs } from "../ThemeTabs"
 import { themes } from "@/registery/themes"
 
 
+
+
 const data = [
   {
     goal: 400,
@@ -58,13 +60,13 @@ export function CardsActivityGoal() {
   const { theme: mode } = useTheme()
   const [config] = useConfig()
   const theme = themes.find((theme) => theme.name === config.theme)
-
   const [goal, setGoal] = React.useState(() => {
     const storedGoal = localStorage.getItem("codingGoal")
     return storedGoal ? parseInt(storedGoal, 10) : 1
   })
 
   const [countdown, setCountdown] = React.useState(0)
+  const [isCounting, setIsCounting] = React.useState(false) // State to track if countdown is active
 
   React.useEffect(() => {
     const storedGoal = localStorage.getItem("codingGoal")
@@ -73,36 +75,35 @@ export function CardsActivityGoal() {
       const remainingTime = Math.max(0, parseInt(storedGoal, 10) - (Date.now() - parseInt(storedCountdown, 10)))
       if (remainingTime > 0) {
         setCountdown(remainingTime)
+        setIsCounting(true) // Start counting if there's remaining time
       } else {
         setCountdown(0)
+        setIsCounting(false)
       }
     }
   }, [])
 
   const startCountdown = () => {
-    const endTime = Date.now() + goal * 3600000; 
-    setCountdown(goal * 3600000);
-    localStorage.setItem("codingGoal", String(goal));
-    localStorage.setItem("countdown", String(endTime));
+    const endTime = Date.now() + goal * 3600000
+    setCountdown(goal * 3600000)
+    setIsCounting(true) 
+    localStorage.setItem("codingGoal", String(goal))
+    localStorage.setItem("countdown", String(endTime))
     const countdownInterval = setInterval(() => {
-      const remainingTime = Math.max(0, endTime - Date.now());
-      const hours = Math.floor(remainingTime / 3600000);
-      const minutes = Math.floor((remainingTime % 3600000) / 60000);
-      const seconds = Math.floor((remainingTime % 60000) / 1000);
+      const remainingTime = Math.max(0, endTime - Date.now())
       if (remainingTime === 0) {
-        clearInterval(countdownInterval);
-        localStorage.removeItem("codingGoal");
-        localStorage.removeItem("countdown");
+        clearInterval(countdownInterval)
+        localStorage.removeItem("codingGoal")
+        localStorage.removeItem("countdown")
+        setIsCounting(false) 
       }
-      setCountdown(remainingTime);
-    }, 1000);
-  };
-  
+      setCountdown(remainingTime)
+    }, 1000)
+  }
+
   const onClick = (adjustment: number) => {
     setGoal((prevGoal) => Math.max(1, Math.min(100, prevGoal + adjustment)))
   }
-
-
   return (
     <Card>
       <CardHeader className="pb-4">
@@ -111,28 +112,26 @@ export function CardsActivityGoal() {
       </CardHeader>
       <CardContent className="pb-2">
         <div className="flex items-center justify-center space-x-2">
-        <Button
+          <Button
             variant="outline"
             size="icon"
             className="h-8 w-8 shrink-0 rounded-full"
             onClick={() => onClick(-1)}
-            disabled={goal <= 1}
+            disabled={goal <= 1 || isCounting} // Disable if goal is 1 or countdown is active
           >
             <MinusIcon className="h-4 w-4" />
             <span className="sr-only">Decrease</span>
           </Button>
           <div className="flex-1 text-center">
             <div className="text-5xl font-bold tracking-tighter">{goal}</div>
-            <div className="text-[0.70rem] uppercase text-muted-foreground">
-             Hours/day
-            </div>
+            <div className="text-[0.70rem] uppercase text-muted-foreground">Hours/day</div>
           </div>
           <Button
             variant="outline"
             size="icon"
             className="h-8 w-8 shrink-0 rounded-full"
             onClick={() => onClick(1)}
-            disabled={goal >= 100}
+            disabled={goal >= 100 || isCounting} // Disable if goal is 100 or countdown is active
           >
             <PlusIcon className="h-4 w-4" />
             <span className="sr-only">Increase</span>
@@ -141,14 +140,16 @@ export function CardsActivityGoal() {
         {countdown !== null && (
           <div className="my-3 h-[60px]">
             <div className="text-center text-lg font-semibold">
-              Time remaining: {Math.floor(countdown / 3600000)} hours {Math.floor((countdown % 3600000) / 60000)} minutes {Math.floor((countdown % 60000) / 1000)} seconds
+              Time remaining: {Math.floor(countdown / 3600000)} hours{" "}
+              {Math.floor((countdown % 3600000) / 60000)} minutes{" "}
+              {Math.floor((countdown % 60000) / 1000)} seconds
             </div>
           </div>
         )}
         <div className="my-3 h-[60px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <Bar
+            <Bar
                 dataKey="goal"
                 style={
                   {
@@ -165,7 +166,7 @@ export function CardsActivityGoal() {
         </div>
       </CardContent>
       <CardFooter>
-      <Button className="w-full" onClick={startCountdown}>
+        <Button className="w-full" onClick={startCountdown} disabled={isCounting}>
           Set Goal
         </Button>
       </CardFooter>

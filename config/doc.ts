@@ -21,6 +21,10 @@ export const docsConfig: DocsConfig = {
       title: "Announcements",
       href: "/announcements",
     },
+    // {
+    //   title: "view-list",
+    //   href: "/announcements",
+    // },
   
   ],
  

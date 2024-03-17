@@ -1,6 +1,7 @@
 import db from '@/prisma/db';
 import { NextResponse } from 'next/server';
 
+
 export async function GET(request: any) {
 
     try {

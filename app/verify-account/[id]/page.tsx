@@ -1,7 +1,11 @@
+import VerifyAccount from '@/components/VerifyAccount'
 import React from 'react'
 
-export default function page() {
+export default async function page({params:{id}}:any) {
   return (
-    <div>page</div>
+    <div className=''>
+    
+      <VerifyAccount verificationId={id}/>
+    </div>
   )
 }

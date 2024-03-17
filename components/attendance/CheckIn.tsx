@@ -1,16 +1,30 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { Button } from '../ui/button';
 import { ScanLine } from 'lucide-react';
 import { toast } from '../ui/use-toast';
-import { date } from 'zod';
 import { Icons } from '../Icons';
 
-export default function CheckIn() {
+export default function CheckIn({ changeArrival }:any) {
   const [studentId, setStudentId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [canToggleCheckIn, setCanToggleCheckIn] = useState(true);
+
+  useEffect(() => {
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const timeUntilTomorrow = tomorrow.getTime() - now.getTime();
+
+    const timer = setTimeout(() => {
+      setCanToggleCheckIn(true);
+    }, timeUntilTomorrow);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   setInterval(() => {
     setCurrentTime(new Date().toLocaleTimeString());
@@ -22,7 +36,7 @@ export default function CheckIn() {
 
     try {
       const response = await fetch(`${baseUrl}/api/check-in`, {
-        method: "POST",
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -38,31 +52,33 @@ export default function CheckIn() {
           });
         } else {
           toast({
-            description: "Check In was Successfully",
+            description: 'Check In was Successful',
           });
+          changeArrival(false);
+          setCanToggleCheckIn(false);
         }
       } else {
         setIsLoading(false);
         toast({
-          description: "Something went wrong",
+          description: 'Something went wrong',
         });
       }
     } catch (error) {
       console.error('Check-in error:', error);
       setIsLoading(false);
       toast({
-        description: "Something went wrong",
+        description: 'Something went wrong',
       });
     }
-  };
+  }
 
   return (
     <div>
-      <Card className="border-[#36b6fa] rounded-lg">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 font-bold text-2xl text-[#36b6fa] ">
+      <Card className='border-[#36b6fa] rounded-lg'>
+        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-4 font-bold text-2xl text-[#36b6fa] '>
           TODAY
         </CardHeader>
-        <CardContent className="flex flex-col gap-2">
+        <CardContent className='flex flex-col gap-2'>
           <div className='flex items-center justify-between '>
             <div className='flex flex-col gap-3'>
               <h1 className='font-bold lg:text-4xl text-3xl tracking-wide'>{currentTime}</h1>
@@ -74,20 +90,18 @@ export default function CheckIn() {
             </div>
           </div>
           <div>
-            {
-              isLoading ? (
-                <Button variant="outline"  disabled={isLoading}  className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center bg-[#36b6fa] font-bold '>
-                 <Icons.spinner className="m-2 h-6 w-6 animate-spin" />  Check In
-                </Button>
-              ) : (
-                <Button onClick={handleCheckIn} className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center hover:bg-[#36b6fa] bg-[#36b6fa] font-bold'>
-                  <ScanLine /> Check In
-                </Button>
-              )
-            }
+            {isLoading ? (
+              <Button variant='outline' disabled={isLoading} className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center bg-[#36b6fa] font-bold '>
+                <Icons.spinner className='m-2 h-6 w-6 animate-spin' /> Check In
+              </Button>
+            ) : (
+              <Button onClick={handleCheckIn} disabled={!canToggleCheckIn} className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center hover:bg-[#36b6fa] bg-[#36b6fa] font-bold'>
+                <ScanLine /> Check In
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

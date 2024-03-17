@@ -5,16 +5,28 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { DashBoardLinks } from "./DashBoardLinks"
 import { CommandMenu } from "../CommandMenu"
+import { useSession } from "next-auth/react"
 // import { Icons } from "./Icons"
 
 
 export function DashNav() {
+  const { data: session }: { data: any | null | undefined } = useSession();
+  const userId = session?.user?.id;
+
+  // const userId = session?.id;
+  // console.log(userId);
+
   const pathname = usePathname()
   const components: { title: string; href: string;}[] = [
     {
       title: "Attendance",
       href: "/dashboard/attendence",
     },
+    {
+      title: "view-list",
+      href: userId ? `/dashboard/over-view/${userId}` : "/dashboard",
+    },
+
   ]
   return (
     <div className="flex flex-col gap-3 ">

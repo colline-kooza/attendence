@@ -13,7 +13,7 @@ import { signIn } from "next-auth/react";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function Login({ students }: any) {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -27,24 +27,34 @@ export default function Login() {
   });
 
   async function onSubmit(data: LoginProps) {
-    // console.log(data)
     try {
       setIsLoading(true);
+  
+      const student = students.find((s: any) => s.email === data.email);
+  
+      if (!student || !student.emailVerified) {
+        setIsLoading(false);
+        toast({
+          description: 'Account not found or email not verified.',
+        });
+        return;
+      }
+  
       const response = await signIn('credentials', {
         email: data.email,
         password: data.password,
         redirect: false,
       });
-
+  
       if (response?.error) {
         throw new Error(response.error);
       }
-
+  
       setIsLoading(false);
       toast({
         description: 'Successfully Logged In',
       });
-      router.push('/dashboard');
+      router.push('/dashboard/attendence');
     } catch (error) {
       setIsLoading(false);
       console.error('Login error:', error);
@@ -53,6 +63,7 @@ export default function Login() {
       });
     }
   }
+  
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

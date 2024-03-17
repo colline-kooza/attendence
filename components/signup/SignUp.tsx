@@ -41,7 +41,7 @@ export function CardsCreateAccount() {
 
   async function onSubmit(data: StudentProps) {
     data.image = image;
-    console.log(data)
+    // console.log(data)
     if (!image) {
       toast({
         description: "Profile image is required.",
@@ -50,16 +50,17 @@ export function CardsCreateAccount() {
     }
     try {
       setIsLoading(true);
-      await saveData(data);
+      const newStudentData = await saveData(data);
+      // console.log( newStudentData )
       setIsLoading(false); 
       toast({
-        description: "Your have successfully registered.",
+        description: "We have sent A verification Code to your Email",
       });
-      router.push("/login");
+      router.push(`/verify-account/${newStudentData.verifiactionToken}`);
     } catch (error) {
       setIsLoading(false);
       toast({
-        description: "Ooops Check Your Credentials.",
+        description: "Ooops Already Have an Account / something wrong happened.",
       });
       console.log(error);
     }

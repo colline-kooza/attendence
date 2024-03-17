@@ -30,7 +30,7 @@ export default function AuthenticationPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className="container relative  min-h-[600px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="container relative min-h-[600px] flex-col items-center justify-center md:grid lg:max-w-none lg:mt-0 mt-[3rem] lg:grid-cols-2 lg:px-0">
         <Link
           href="/login"
           className={cn(

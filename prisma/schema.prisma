@@ -22,6 +22,8 @@ model Student {
   role        Attendance @default(STUDENT)
   emailVerifiedDate  DateTime  @default(now())
   verifiactionRequestCount  Int?
+  verifiactionToken  String?
+  token  String?
   attendance  AttendanceRecord[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
@@ -31,7 +33,7 @@ model AttendanceRecord {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
   student    Student   @relation(fields: [studentId], references: [id])
   studentId  String    @db.ObjectId
-  checkIn    DateTime  @default(now())
+  checkIn    DateTime  @default(now()) 
   checkOut   DateTime?
   status     String?
   createdAt  DateTime  @default(now())

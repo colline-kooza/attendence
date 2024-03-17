@@ -6,13 +6,15 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { CardsCreateAccount } from "@/components/signup/SignUp"
 import Login from "@/components/login/Login"
+import getData from "@/utils/getData"
 
 // export const metadata: Metadata = {
 //   title: "Authentication",
 //   description: "Authentication forms built using the components.",
 // }
 
-export default function AuthenticationPage() {
+export default async function AuthenticationPage() {
+  const students=await getData("students")
   return (
     <>
       <div className="hidden">
@@ -31,7 +33,7 @@ export default function AuthenticationPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className="container relative min-h-[600px] flex-col items-center justify-center md:grid lg:max-w-none mt-5 lg:grid-cols-2 lg:px-0">
+      <div className="container relative min-h-[600px] flex-col items-center justify-center md:grid lg:max-w-none mt-[8rem] lg:mt-0 md:mt-0 lg:grid-cols-2 lg:px-0">
         <Link
           href="/register"
           className={cn(
@@ -78,7 +80,7 @@ export default function AuthenticationPage() {
                 Enter correct Credentials to Login 
               </p>
             </div>
-            <Login />
+            <Login students={students}/>
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to {" "}
               <Link

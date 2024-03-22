@@ -69,14 +69,14 @@
           },
         });
 
-        console.log(newRecord);
+        // console.log(newRecord);
         return NextResponse.json({
           newRecord
         });
       }
     } catch (error) {
       console.error(error);
-      return NextResponse.json({ message: 'Internal server error' });
+      return NextResponse.json({ message: 'Not In Range' });
     }
   }
 

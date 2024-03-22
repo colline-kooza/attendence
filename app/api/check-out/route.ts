@@ -60,7 +60,7 @@ export async function POST(request: any) {
     return NextResponse.json(updatedRecord);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'Internal server error' });
+    return NextResponse.json({ message: 'Not In Range' });
   }
 }
 export async function GET(request: any) {

@@ -76,11 +76,12 @@ export function CardsCreateAccount() {
               <span className="w-full border-t" />
             </div>
           </div>
-          <div className="grid gap-2">
+          <div className="gap-2 flex flex-col items-center justify-center">
             <Label htmlFor="text">Upload Profile Image</Label>
            {
             image? (
-              <img src={image} alt="" className="w-[200px] h-[200px] object-contain"/>
+              <img className="inline-flex object-cover border-4 border-black rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-black bg-indigo-50 h-24 w-24 !h-32 mt-3 !w-32 mb-4 md:mb-0 ml-0 md:mr-5"
+              src={image} alt=""/>
             ) : (
               <div className="flex justify-start mt-3">
               <UploadButton

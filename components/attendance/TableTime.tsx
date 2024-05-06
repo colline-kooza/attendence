@@ -15,6 +15,8 @@ interface AttendanceRecord {
 }
 
 export default function TableTime() {
+
+  
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function TableTime() {
     return attendance.map(record => {
       let checkIn = "";
       let checkOut = "";
-      let totalTime = "null";
+      let totalTime = "";
 
       if (record.checkIn && record.status !== "absent") {
         checkIn = new Date(record.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -77,7 +79,7 @@ export default function TableTime() {
               <TableHead>Date</TableHead>
               <TableHead>Arrival</TableHead>
               <TableHead>Departure</TableHead>
-              <TableHead>Status</TableHead> {/* Add Status column header */}
+              <TableHead>Status</TableHead>
               <TableHead className="text-right">Total</TableHead>
             </TableRow>
           </TableHeader>

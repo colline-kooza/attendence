@@ -4,12 +4,12 @@ import React from 'react'
 export default function Page() {
   return (
     <main>
-    <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-start h-screen md:px-8">
+    <div className="lg:mt-[10rem] mt-[8rem]">
         <div className="max-w-lg mx-auto space-y-3 text-center">
             <h3 className="text-indigo-600 font-semibold">
                 404 Error
             </h3>
-            <p className="text-gray-800 dark:text-gray-300 text-4xl font-semibold sm:text-5xl">
+            <p className="text-[#e11d48]  text-4xl font-bold sm:text-5xl">
                 Page not found
             </p>
             <p className="text-gray-600 dark:text-gray-500 ">

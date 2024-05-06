@@ -11,8 +11,11 @@ import { usePathname } from "next/navigation"
 
 export function SiteHeader() {
   const pathName = usePathname()
-  if (pathName == "/dashboard" || pathName =="/dashboard/attendence" || pathName =="/dashboard/profile" || pathName =="/dashboard/registration" || pathName =="/dashboard/settings"){
+  if (pathName == "/dashboard" || pathName =="/dashboard/attendence" || pathName =="/dashboard/profile" || pathName =="/dashboard/registration" ||  pathName =="/dashboard/over-view/"){
     return null
+  }
+  if (pathName.startsWith("/dashboard/over-view")) {
+    return null;
   }
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

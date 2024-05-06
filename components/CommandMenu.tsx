@@ -15,13 +15,62 @@ import { useTheme } from "next-themes"
 import { cn } from "@/lib/utils"
 import { Button } from "./ui/button"
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "./ui/command"
+import { AttendanceRecord } from "@prisma/client"
+import getData from "@/utils/getData"
+import Link from "next/link"
 
 
 export function CommandMenu({ ...props }:any) {
   const router = useRouter()
   const [open, setOpen] = React.useState(false)
   const { setTheme } = useTheme()
+  
+  const [attendance, setAttendance] = React.useState<AttendanceRecord[]>([]);
 
+  React.useEffect(() => {
+    async function fetchAttendance() {
+      try {
+        const fetchedAttendance: AttendanceRecord[] = await getData("/check-in");
+        setAttendance(fetchedAttendance);
+      } catch (error) {
+        console.error("Failed to fetch attendance:", error);
+      }
+    }
+
+    fetchAttendance();
+  }, []);
+  const calculateTotalTime = () => {
+    let overallTotalTime = 0;
+    return attendance?.map(record => {
+      let checkIn = "";
+      let checkOut = "";
+      let totalTime = "null";
+
+      if (record.checkIn && record.status !== "absent") {
+        checkIn = new Date(record.checkIn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+      if (record.checkOut && record.status !== "absent") {
+        checkOut = new Date(record.checkOut).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+      }
+      if (record.checkIn && record.checkOut && record.status !== "absent") {
+        const totalTimeInMilliseconds = new Date(record.checkOut).getTime() - new Date(record.checkIn).getTime();
+        totalTime = new Date(totalTimeInMilliseconds).toISOString().substr(11, 8);
+        overallTotalTime += totalTimeInMilliseconds;
+      }
+     
+      // Include status in the returned object
+      const status = record.status === "absent" ? "Absent" : "present";
+      
+      return {
+        date: new Date(record.checkIn).toLocaleDateString(),
+        checkIn,
+        checkOut,
+        totalTime,
+        status
+      };
+    });
+  };
+  const attendanceRecords = calculateTotalTime();
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if ((e.key === "k" && (e.metaKey || e.ctrlKey)) || e.key === "/") {
@@ -83,7 +132,17 @@ export function CommandMenu({ ...props }:any) {
                   {navItem.title}
                 </CommandItem>
               ))} */}
-              helooooo
+
+
+           {attendanceRecords?.map((record:any, index) => (
+            <div className="mr-2 flex items-center gap-2 mt-2 ">
+            <CircleIcon className="h-3 w-3" />
+            <Link href="/dashboard/attendence">
+            {record.date}
+            </Link>
+            </div>
+            
+            ))}
           </CommandGroup>
           {/* {docsConfig.sidebarNav.map((group:any) => (
             <CommandGroup key={group.title} heading={group.title}>
@@ -103,7 +162,6 @@ export function CommandMenu({ ...props }:any) {
               ))}
             </CommandGroup>
           ))} */}
-          <h2>heloooooooooo</h2>
           <CommandSeparator />
           <CommandGroup heading="Theme">
             <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>

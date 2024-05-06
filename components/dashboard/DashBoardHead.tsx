@@ -19,6 +19,7 @@ import AvatarPage from "../cards/Avatar"
 
 export default function DashBoardHead() {
   const { data: session, status } = useSession();
+  // console.log(session)
   const user = session?.user;
   const image = user?.image || 'https://utfs.io/f/2c49867b-4d23-489c-b038-807f3d1d126e-2klm05.jpg'
   ;

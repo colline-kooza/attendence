@@ -50,6 +50,7 @@ export default function CheckIn({ changeArrival }:any) {
           toast({
             description: data.message,
           });
+          // window.location.reload()
         } else {
           toast({
             description: 'Check In was Successful',

@@ -19,7 +19,7 @@ export default async function StudentPage({ params: { id } }: any) {
                 <Admin  />
         ):(
           <main>
-          <div className="max-w-screen-xl mx-auto px-4 flex items-center justify-start h-screen md:px-8">
+          <div className=" mt-[4rem]">
               <div className="max-w-lg mx-auto space-y-3 text-center">
                   <h3 className="text-indigo-600 font-semibold">
                       401 Error
@@ -28,7 +28,7 @@ export default async function StudentPage({ params: { id } }: any) {
                  Unauthorized Page
                   </p>
                   <p className="text-gray-600 dark:text-gray-300">
-                      Sorry, the page you are looking for could not be found or has been removed.
+                      Sorry, the page you are looking for is Unauthorized and cannot be reached at the moment.
                   </p>
                   <div className="flex flex-wrap items-center justify-center gap-3">
                       <Link href="/dashboard" className="block py-2 px-4 text-white font-medium bg-indigo-600 duration-150 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg">

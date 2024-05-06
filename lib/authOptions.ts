@@ -74,7 +74,7 @@ export const authOptions:NextAuthOptions = {
                 session.user.image = token.image || '';
                 session.user.emailVerified = token.emailVerified;
             }
-            console.log(token)
+            // console.log(token)
             return session;
         },
         async jwt({ token, user }:any) {

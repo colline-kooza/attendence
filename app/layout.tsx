@@ -48,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <main className="flex-1">{children}</main>
               </div>
             </div>
-            <ThemeSwitcher />
+            {/* <ThemeSwitcher /> */}
           </ThemeProvider>
       
           <SiteFooter/>

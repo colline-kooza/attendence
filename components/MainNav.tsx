@@ -12,21 +12,13 @@ export function MainNav() {
   return (
     <div className="mr-4 hidden md:flex">
       <Link href="/" className="mr-6 flex items-center space-x-2">
-    {/* <img src="/dcsLogo.webp" alt="" className="h-12 w-20"/>  */}
-        <span className="hidden font-bold sm:inline-block">
-         Desishub
-        </span>
+    <img src="/dcsLogo.webp" alt="" className="h-12 w-20"/> 
+        {/* <span className="hidden font-bold sm:inline-block">
+         Attendance
+        </span> */}
       </Link>
       <nav className="flex items-center gap-6 text-sm">
-        <Link
-          href="/resources"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname === "/gallery" ? "text-foreground" : "text-foreground/60"
-          )}
-        >
-         Resources
-        </Link>
+       
 
         <Link
           href="/announcements"

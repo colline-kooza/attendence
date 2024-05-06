@@ -66,7 +66,7 @@ export function CardsActivityGoal() {
   })
 
   const [countdown, setCountdown] = React.useState(0)
-  const [isCounting, setIsCounting] = React.useState(false) // State to track if countdown is active
+  const [isCounting, setIsCounting] = React.useState(false)
 
   React.useEffect(() => {
     const storedGoal = localStorage.getItem("codingGoal")
@@ -75,7 +75,7 @@ export function CardsActivityGoal() {
       const remainingTime = Math.max(0, parseInt(storedGoal, 10) - (Date.now() - parseInt(storedCountdown, 10)))
       if (remainingTime > 0) {
         setCountdown(remainingTime)
-        setIsCounting(true) // Start counting if there's remaining time
+        setIsCounting(true) 
       } else {
         setCountdown(0)
         setIsCounting(false)
@@ -117,7 +117,7 @@ export function CardsActivityGoal() {
             size="icon"
             className="h-8 w-8 shrink-0 rounded-full"
             onClick={() => onClick(-1)}
-            disabled={goal <= 1 || isCounting} // Disable if goal is 1 or countdown is active
+            disabled={goal <= 1 || isCounting} 
           >
             <MinusIcon className="h-4 w-4" />
             <span className="sr-only">Decrease</span>
@@ -131,7 +131,7 @@ export function CardsActivityGoal() {
             size="icon"
             className="h-8 w-8 shrink-0 rounded-full"
             onClick={() => onClick(1)}
-            disabled={goal >= 100 || isCounting} // Disable if goal is 100 or countdown is active
+            disabled={goal >= 100 || isCounting} 
           >
             <PlusIcon className="h-4 w-4" />
             <span className="sr-only">Increase</span>
@@ -166,9 +166,16 @@ export function CardsActivityGoal() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full" onClick={startCountdown} disabled={isCounting}>
+        {
+          isCounting?(
+       ""
+          ):(
+   <Button className="w-full" onClick={startCountdown} disabled={isCounting}>
           Set Goal
         </Button>
+          )
+        }
+    
       </CardFooter>
     </Card>
   )

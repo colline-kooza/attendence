@@ -24,14 +24,14 @@ model Student {
   verifiactionRequestCount  Int?
   verifiactionToken  String?
   token  String?
-  attendance  AttendanceRecord[]
+  attendance           AttendanceRecord[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
 
 model AttendanceRecord {
   id         String    @id @default(auto()) @map("_id") @db.ObjectId
-  student    Student   @relation(fields: [studentId], references: [id])
+  student    Student   @relation(fields: [studentId], references: [id],onDelete: Cascade)
   studentId  String    @db.ObjectId
   checkIn    DateTime  @default(now()) 
   checkOut   DateTime?

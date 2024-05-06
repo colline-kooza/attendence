@@ -14,6 +14,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 
 export default function Login({ students }: any) {
+  // console.log(students)
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -27,11 +28,12 @@ export default function Login({ students }: any) {
   });
 
   async function onSubmit(data: LoginProps) {
+    console.log(data)
     try {
       setIsLoading(true);
   
       const student = students.find((s: any) => s.email === data.email);
-  
+     
       if (!student || !student.emailVerified) {
         setIsLoading(false);
         toast({

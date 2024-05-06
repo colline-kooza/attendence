@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import AuthenticationPage from '@/app/login/page';
 
 export default function Page() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [arrival, setArrival] = useState(true);
 
   function changeArrival(states:any) {
@@ -18,7 +18,6 @@ export default function Page() {
 
   return (
     <>
-      {session ? (
         <div className='lg:max-w-[50%] max-w-[95%]  mx-auto min-h-screen py-4 flex flex-col gap-8'>
           <div className=''>
             <Head changeArrival={changeArrival} arrival={arrival} />
@@ -31,9 +30,6 @@ export default function Page() {
           <hr />
           <TableTime />
         </div>
-      ) : (
-        <AuthenticationPage />
-      )}
     </>
   );
 }

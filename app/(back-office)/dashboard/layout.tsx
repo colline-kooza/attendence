@@ -1,12 +1,18 @@
 import DashBoardHead from '@/components/dashboard/DashBoardHead'
+import authOptions from '@/lib/authOptions';
 import { getCurrentUser } from '@/lib/authProvider'
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 import React, { Children } from 'react'
 
 interface RootLayoutProps {
     children: React.ReactNode
   }
   export default async function Layout({ children }:RootLayoutProps) {
-    const session = await getCurrentUser()
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      redirect("/login");
+    }
 
     return (
     <div>

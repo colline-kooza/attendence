@@ -80,8 +80,22 @@ export function CardsCreateAccount() {
             <Label htmlFor="text">Upload Profile Image</Label>
            {
             image? (
-              <img className="inline-flex object-cover border-4 border-black rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-black bg-indigo-50 h-24 w-24 !h-32 mt-3 !w-32 mb-4 md:mb-0 ml-0 md:mr-5"
+        <div>
+      <img className="inline-flex object-cover border-4 border-black rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-black bg-indigo-50 h-24 w-24 !h-32 mt-3 !w-32 mb-4 md:mb-0 ml-0 md:mr-5"
               src={image} alt=""/>
+
+           <div className="mt-3">
+           <UploadButton
+              endpoint="profileImage"
+              onClientUploadComplete={handleImageUpload}
+              onUploadError={(error: Error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
+           </div>
+
+        </div>
             ) : (
               <div className="flex justify-start mt-3">
               <UploadButton

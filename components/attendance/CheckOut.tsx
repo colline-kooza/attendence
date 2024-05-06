@@ -36,6 +36,7 @@ export default function CheckOut() {
           toast({
             description: data.message,
           });
+
         } else {
           toast({
             description: "Check Out was Successfully",

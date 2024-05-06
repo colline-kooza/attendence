@@ -135,7 +135,7 @@ export function CommandMenu({ ...props }:any) {
 
 
            {attendanceRecords?.map((record:any, index) => (
-            <div className="mr-2 flex items-center gap-2 mt-2 ">
+            <div key={index} className="mr-2 flex items-center gap-2 mt-2 ">
             <CircleIcon className="h-3 w-3" />
             <Link href="/dashboard/attendence">
             {record.date}

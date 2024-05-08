@@ -22,7 +22,7 @@ export default async function Hero() {
      <div className="container relative  ">
       <PageHeader>
         <Announcement />
-        <PageHeaderHeading>Desishub Student Attendance</PageHeaderHeading>
+        <PageHeaderHeading className="lg:text-6xl text-4xl">Desishub Student Attendance</PageHeaderHeading>
         <div className="w-[40rem] h-8 relative">
       {/* Gradients */}
       <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />

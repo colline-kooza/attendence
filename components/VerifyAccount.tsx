@@ -7,26 +7,26 @@
 import { Button } from './ui/button';
 import { Icons } from './Icons';
   
-  export default function VerifyAccount({ verificationId }: any) {
+  export default function VerifyAccount({ verificationId, student }: any) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
     //  console.log(verificationId)
     const onSubmit = async (data: any) => {
+      // console.log(data)
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         setLoading(true); 
     
-        const students = await getData("students");
-        // console.log(students)
-        const verifiedStudent = students.find((student: any) => student. verifiactionToken === verificationId);
-        console.log(verifiedStudent)
-        if (verifiedStudent) {
-          if (verifiedStudent.token === data.otp1 + data.otp2 + data.otp3 + data.otp4) {
+       
+        // console.log(verifiedStudent)
+        if (student) {
+          // console.log(student)
+          if (student.token === data.otp1 + data.otp2 + data.otp3 + data.otp4) {
             toast({
               description: "Verification successful!",
             });
             reset();
-            const studentId = verifiedStudent.id;
+            const studentId = student.id;
     
             const url = `${baseUrl}/api/updateVerified/${studentId}`;
             const method = 'PATCH';

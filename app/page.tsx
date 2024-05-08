@@ -1,4 +1,5 @@
 import Hero from "@/components/Hero";
+import Resources from "@/components/Resources";
 
 export default async function Home() {
 
@@ -6,7 +7,6 @@ export default async function Home() {
      <div>
     <div className="">
     <Hero/>
-    {/* <Resources/> */}
     </div>
    </div>
   );

@@ -16,10 +16,10 @@ import { Icons } from './Icons';
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         setLoading(true); 
     
-        const students = await getData("/students");
+        const students = await getData("students");
         // console.log(students)
         const verifiedStudent = students.find((student: any) => student. verifiactionToken === verificationId);
-        // console.log(verifiedStudent)
+        console.log(verifiedStudent)
         if (verifiedStudent) {
           if (verifiedStudent.token === data.otp1 + data.otp2 + data.otp3 + data.otp4) {
             toast({

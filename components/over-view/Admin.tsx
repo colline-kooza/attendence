@@ -154,7 +154,6 @@ export default function Admin() {
       <TableHead>Date</TableHead>
       <TableHead>Arrival</TableHead>
       <TableHead>Departure</TableHead>
-      <TableHead>Status</TableHead>
       <TableHead className="text-right">Total</TableHead>
       <TableHead></TableHead>
     </TableRow>
@@ -170,59 +169,6 @@ export default function Admin() {
         <TableCell>{record.status || 'Pending'}</TableCell>
 
         <TableCell className="text-right whitespace-nowrap">{calculateTotalTime(record.checkIn, record.checkOut)}</TableCell>
-
-            <TableCell className="whitespace-nowrap ml-5 flex items-center">
-            <Popover>
-            <PopoverTrigger>
-            <Button
-             title="View Product"
-             className="text-green-600 bg-black"
-            >
-            <Pencil className="w-8 h-4" />
-          </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className='font-bold text-lg'>Change Order Status</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid gap-6">
-                        <div className="grid gap-3">
-                          <Label className='text-sm' htmlFor="status">Status</Label>
-                          <select id="large" {...register('status')} className="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <option value="kitchen">In kitchen</option>
-                  <option value="wait list">Wait List</option>
-                  <option value="ready">Ready</option>
-                <option value="served">Served</option>
-                  </select>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                    {
-                     loading ? 
-                      (
-                      <Button variant='outline' disabled={loading}  className="w-full flex gap-2 items-center bg-slate-950 text-white">
-                      <PiSpinner className="animate-spin"/> Updating Attendance
-                      </Button>
-                      ):(
-                      <Button type="submit" >Update Attendance Status</Button>
-                      )
-                      }
-                    </CardFooter>
-                </Card>
-
-                </form>
-
-            </PopoverContent>
-            </Popover>
-                    <div className="flex gap-4 pt-2">
-                    
-                    </div>
-          </TableCell>
-       
       </TableRow>
     ))}
   </TableBody>

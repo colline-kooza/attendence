@@ -10,66 +10,65 @@ import { Icons } from './Icons';
   export default function VerifyAccount({ verificationId }: any) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
-  
+    //  console.log(verificationId)
     const onSubmit = async (data: any) => {
       try {
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
         setLoading(true); 
-        const students = await getData("students");
-        const verifiedStudent=students.find((student:any)=>student.verifiactionToken == verificationId )
+    
+        const students = await getData("/students");
+        // console.log(students)
+        const verifiedStudent = students.find((student: any) => student. verifiactionToken === verificationId);
         // console.log(verifiedStudent)
         if (verifiedStudent) {
           if (verifiedStudent.token === data.otp1 + data.otp2 + data.otp3 + data.otp4) {
             toast({
               description: "Verification successful!",
             });
-            reset()
-            window.location.href = '/login';
-            const studentId=verifiedStudent.id
-            // console.log(studentId)
-              setLoading(true);
-              const url = `${baseUrl}/api/updateVerified/${studentId}` 
-              const method = 'PATCH';
-              const response = await fetch(url, {
-                method: method,
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(studentId), 
+            reset();
+            const studentId = verifiedStudent.id;
+    
+            const url = `${baseUrl}/api/updateVerified/${studentId}`;
+            const method = 'PATCH';
+            const response = await fetch(url, {
+              method: method,
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({}),
+            });
+    
+            if (response.ok) {
+              toast({
+                description: "Email successfully Approved",
               });
-            //   if(response.ok){
-            //     toast({
-            //       description: "Email successfully Approved",
-            //     })
-                
-            //   }else(
-            //     toast({
-            //       description: "Failed to verify the email",
-            //     })
-            //   )
-            //   toast({
-            //   description: "Failed to verify the email",
-            // });
-           
+              window.location.href="/login"
+            } else {
+              toast({
+                description: "Failed to verify the email",
+              });
+            }
           } else {
-            reset()
+            reset();
             toast({
               description: "Incorrect token. Please try again.",
             });
           }
         } else {
           toast({
-            description: "Something Wrong Happened",
+            description: "Student not found or verification token mismatch",
           });
         }
       } catch (error) {
         console.log(error);
-        // alert("Failed to verify. Please try again later.");
+        toast({
+          description: "Failed to verify. Please try again later.",
+        });
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
+    
   
     return (
       <div className='mt-[6rem] '>

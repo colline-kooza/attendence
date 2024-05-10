@@ -14,7 +14,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 
 export default function Login({ students }: any) {
-  console.log(students)
+  // console.log(students)
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();

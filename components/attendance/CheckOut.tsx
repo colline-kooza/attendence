@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { Button } from '../ui/button';
@@ -8,7 +9,7 @@ import { Icons } from '../Icons';
 type Coordinate = {
   lat: number;
   lon: number;
-};
+}
 
 export default function CheckOut({ changeArrival }: any) {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,18 +48,14 @@ export default function CheckOut({ changeArrival }: any) {
         const userLatitude = position.coords.latitude;
         const userLongitude = position.coords.longitude;
 
-        const workplaceLatitude = 0.3437781; 
-        const workplaceLongitude = 32.6538716; 
-        const distanceThreshold = 0.001;
+        const rangeCoordinates = [
+          { lat: 0.3463026, lon: 32.6466738 },
+          { lat: 0.3437781, lon: 32.6538716 },
+        ];
 
-        const distance = calculateDistance(
-          userLatitude,
-          userLongitude,
-          workplaceLatitude,
-          workplaceLongitude
-        );
+        const isInRange = checkInRange(userLatitude, userLongitude, rangeCoordinates);
 
-        if (distance <= distanceThreshold) {
+        if (isInRange) {
           const response = await fetch(`${baseUrl}/api/check-out`, {
             method: 'POST',
             headers: {
@@ -78,7 +75,7 @@ export default function CheckOut({ changeArrival }: any) {
               toast({
                 description: 'Check Out was Successful',
               });
-              changeArrival(true); // Update UI or state accordingly
+              changeArrival(true);
               setCanToggleCheckOut(false);
             }
           } else {
@@ -90,7 +87,7 @@ export default function CheckOut({ changeArrival }: any) {
         } else {
           setIsLoading(false);
           toast({
-            description: 'You need to be at the exact place to check out.',
+            description: 'You need to be within the specified range to check out.',
           });
         }
       });
@@ -101,6 +98,18 @@ export default function CheckOut({ changeArrival }: any) {
         description: 'Something went wrong',
       });
     }
+  }
+
+  function checkInRange(userLat: number, userLon: number, rangeCoordinates: Coordinate[]) {
+    const distanceThreshold = 1.5;
+
+    for (const coord of rangeCoordinates) {
+      const distance = calculateDistance(userLat, userLon, coord.lat, coord.lon);
+      if (distance <= distanceThreshold) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
@@ -159,6 +168,7 @@ export default function CheckOut({ changeArrival }: any) {
     </div>
   );
 }
+
 
 
 // "use client"

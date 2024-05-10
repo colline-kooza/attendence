@@ -37,70 +37,70 @@ export default function CheckIn({ changeArrival }: any) {
     return () => clearInterval(interval);
   }, []);
 
-  async function handleCheckIn() {
-    setIsLoading(true);
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  // async function handleCheckIn() {
+  //   setIsLoading(true);
+  //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-    try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const userLatitude = position.coords.latitude;
-        const userLongitude = position.coords.longitude;
+  //   try {
+  //     navigator.geolocation.getCurrentPosition(async (position) => {
+  //       const userLatitude = position.coords.latitude;
+  //       const userLongitude = position.coords.longitude;
 
-        const workplaceLatitude = 0.3437781;
-        const workplaceLongitude = 32.6538716;
-        const distanceThreshold = 0.001; 
+  //       const workplaceLatitude = 0.3437781;
+  //       const workplaceLongitude = 32.6538716;
+  //       const distanceThreshold = 0.001; 
 
-        const distance = calculateDistance(
-          userLatitude,
-          userLongitude,
-          workplaceLatitude,
-          workplaceLongitude
-        );
+  //       const distance = calculateDistance(
+  //         userLatitude,
+  //         userLongitude,
+  //         workplaceLatitude,
+  //         workplaceLongitude
+  //       );
 
-        if (distance <= distanceThreshold) {
-          const response = await fetch(`${baseUrl}/api/check-in`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(studentId),
-          });
+  //       if (distance <= distanceThreshold) {
+  //         const response = await fetch(`${baseUrl}/api/check-in`, {
+  //           method: 'POST',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //           },
+  //           body: JSON.stringify(studentId),
+  //         });
 
-          if (response.ok) {
-            setIsLoading(false);
-            const data = await response.json();
-            if (data.message) {
-              toast({
-                description: data.message,
-              });
-            } else {
-              toast({
-                description: 'Check In was Successful',
-              });
-              changeArrival(false);
-              setCanToggleCheckIn(false);
-            }
-          } else {
-            setIsLoading(false);
-            toast({
-              description: 'Something went wrong',
-            });
-          }
-        } else {
-          setIsLoading(false);
-          toast({
-            description: 'You need to be at the exact place to check in.',
-          });
-        }
-      });
-    } catch (error) {
-      console.error('Check-in error:', error);
-      setIsLoading(false);
-      toast({
-        description: 'Something went wrong',
-      });
-    }
-  }
+  //         if (response.ok) {
+  //           setIsLoading(false);
+  //           const data = await response.json();
+  //           if (data.message) {
+  //             toast({
+  //               description: data.message,
+  //             });
+  //           } else {
+  //             toast({
+  //               description: 'Check In was Successful',
+  //             });
+  //             changeArrival(false);
+  //             setCanToggleCheckIn(false);
+  //           }
+  //         } else {
+  //           setIsLoading(false);
+  //           toast({
+  //             description: 'Something went wrong',
+  //           });
+  //         }
+  //       } else {
+  //         setIsLoading(false);
+  //         toast({
+  //           description: 'You need to be at the exact place to check in.',
+  //         });
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.error('Check-in error:', error);
+  //     setIsLoading(false);
+  //     toast({
+  //       description: 'Something went wrong',
+  //     });
+  //   }
+  // }
 
   function calculateDistance(lat1:any, lon1:any, lat2:any, lon2:any) {
     const earthRadiusKm = 6371;
@@ -124,7 +124,79 @@ export default function CheckIn({ changeArrival }: any) {
   function toRadians(degrees:any) {
     return degrees * (Math.PI / 180);
   }
-
+  async function handleCheckIn() {
+    setIsLoading(true);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  
+    try {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const userLatitude = position.coords.latitude;
+        const userLongitude = position.coords.longitude;
+  
+        const rangeCoordinates = [
+          { lat: 0.3463026, lon: 32.6466738 },
+          { lat: 0.3437781, lon: 32.6538716 },
+          // { lat: 0.3398983, lon: 32.6390378 }
+        ];
+  
+        const isInRange = checkInRange(userLatitude, userLongitude, rangeCoordinates);
+  
+        if (isInRange) {
+          const response = await fetch(`${baseUrl}/api/check-in`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(studentId),
+          });
+  
+          if (response.ok) {
+            setIsLoading(false);
+            const data = await response.json();
+            if (data.message) {
+              toast({
+                description: data.message,
+              });
+            } else {
+              toast({
+                description: 'Check In was Successful',
+              });
+              changeArrival(false);
+              setCanToggleCheckIn(false);
+            }
+          } else {
+            setIsLoading(false);
+            toast({
+              description: 'Something went wrong',
+            });
+          }
+        } else {
+          setIsLoading(false);
+          toast({
+            description: 'You need to be within the specified range to check in.',
+          });
+        }
+      });
+    } catch (error) {
+      console.error('Check-in error:', error);
+      setIsLoading(false);
+      toast({
+        description: 'Something went wrong',
+      });
+    }
+  }
+  
+  function checkInRange(userLat:any, userLon:any, rangeCoordinates:any) {
+    const distanceThreshold = 1.5; 
+  
+    for (const coord of rangeCoordinates) {
+      const distance = calculateDistance(userLat, userLon, coord.lat, coord.lon);
+      if (distance <= distanceThreshold) {
+        return true;
+      }
+    }
+    return false;
+  }
   return (
     <div>
       <Card className='border-[#36b6fa] rounded-lg'>
@@ -144,7 +216,7 @@ export default function CheckIn({ changeArrival }: any) {
           </div>
           <div>
             {isLoading ? (
-              <Button variant='outline' disabled={isLoading} className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center bg-[#36b6fa] font-bold '>
+              <Button variant='outline' disabled={isLoading} className='flex items-center lg:gap-4 gap-3 text-lg py-7 mt-9 w-full justify-center bg-[#36b6fa] font-bold'>
                 <Icons.spinner className='m-2 h-6 w-6 animate-spin' /> Checking...
               </Button>
             ) : (

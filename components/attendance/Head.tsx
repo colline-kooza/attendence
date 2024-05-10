@@ -32,7 +32,7 @@ export default function Head({ changeArrival ,arrival  }: any) {
       <Tabs>
         <TabsList className="ml-auto">
           <TabsTrigger onClick={() => changeArrival(true)} value="all" className={`
-          text-zinc-600 dark:text-zinc-200 ${arrival ? 'text-zinc-600 dark:text-zinc-200 bg-gray-900' : ''}
+          text-zinc-600 dark:text-zinc-200 ${arrival ? 'text-zinc-600 dark:text-zinc-200 bg-slate-700' : ''}
           `} >Check In</TabsTrigger>
           <TabsTrigger onClick={() => changeArrival(false)} value="unread" className="text-zinc-600 dark:text-zinc-200">Check Out</TabsTrigger>
         </TabsList>

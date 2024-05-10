@@ -8,10 +8,10 @@ import { CardsCreateAccount } from "@/components/signup/SignUp"
 import Login from "@/components/login/Login"
 import getData from "@/utils/getData"
 
-// export const metadata: Metadata = {
-//   title: "Authentication",
-//   description: "Authentication forms built using the components.",
-// }
+export const metadata: Metadata = {
+  title: "Authentication",
+  description: "Authentication for login .",
+}
 
 export default async function AuthenticationPage() {
   const students=await getData("students")

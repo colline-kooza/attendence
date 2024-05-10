@@ -28,19 +28,19 @@ export default function Login({ students }: any) {
   });
 
   async function onSubmit(data: LoginProps) {
-    console.log(data)
+    // console.log(data)
     try {
       setIsLoading(true);
   
-      const student = students.find((s: any) => s.email === data.email);
-      console.log(student)
-      if (!student || !student.emailVerified) {
-        setIsLoading(false);
-        toast({
-          description: 'Account not found or email not verified.',
-        });
-        return;
-      }
+      // const student = students.find((s: any) => s.email === data.email);
+      // console.log(student)
+      // if (!student || !student.emailVerified) {
+      //   setIsLoading(false);
+      //   toast({
+      //     description: 'Account not found or email not verified.',
+      //   });
+      //   return;
+      // }
   
       const response = await signIn('credentials', {
         email: data.email,

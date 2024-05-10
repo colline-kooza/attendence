@@ -57,7 +57,7 @@ export default async function MainCards() {
         <div className="hidden ">
           <CardsDataTable />
         </div>
-        <CardsShare />
+        <CardsShare students={students} checkOuts={checkOuts}/>
       </div>
     </div>
   )

@@ -34,8 +34,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             "min-h-screen bg-background font-sans antialiased",
           )}
         >
-                <AuthProvider>
-              <Toaster />
+          <AuthProvider>
+          <Toaster />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -50,7 +50,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
             {/* <ThemeSwitcher /> */}
           </ThemeProvider>
-      
           <SiteFooter/>
           </AuthProvider>
 

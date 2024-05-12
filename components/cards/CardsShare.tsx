@@ -102,7 +102,9 @@ export default function CardsShare({ checkOut = [], students = [] }: any) {
       {latestArrivals.length === 0 ? (
     <Card className='lg:w-[60%] w-full lg:h-[25%] h-[20%] rounded-xl supports-[backdrop-filter]:bg-background/60 bg-background/95 backdrop-blur'>
      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">{new Date().toLocaleDateString()}</CardTitle>
+     <CardTitle className="text-sm font-medium">{new Date().toLocaleDateString().replace(/'/g, "\\'")}</CardTitle>
+
+
       <h2 className='font-semibold'>0:00</h2>
     </CardHeader>
     <CardContent>
@@ -119,7 +121,7 @@ export default function CardsShare({ checkOut = [], students = [] }: any) {
       .map((student: Student) => (
       <Card key={student.id} className='lg:w-[60%] w-full lg:h-[25%] h-[20%] rounded-xl supports-[backdrop-filter]:bg-background/60 bg-background/95 backdrop-blur'>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">{new Date().toLocaleDateString()}</CardTitle>
+        <CardTitle className="text-sm font-medium">{new Date().toLocaleDateString().replace(/'/g, "\\'")}</CardTitle>
           <h2 className='font-semibold'>{new Date(student.checkIn).toLocaleTimeString()}</h2>
         </CardHeader>
         <CardContent>

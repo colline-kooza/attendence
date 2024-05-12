@@ -6,15 +6,11 @@ import { ScanLine } from 'lucide-react';
 import { toast } from '../ui/use-toast';
 import { Icons } from '../Icons';
 
-type Coordinate = {
-  lat: number;
-  lon: number;
-}
-
 export default function CheckOut({ changeArrival }: any) {
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
   const [canToggleCheckOut, setCanToggleCheckOut] = useState(true);
+  const [clientIp, setClientIp] = useState('');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,59 +34,61 @@ export default function CheckOut({ changeArrival }: any) {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await fetch('https://ipinfo.io/json');
+        const data = await response.json();
+        setClientIp(data.ip);
+      } catch (error) {
+        console.error('Error fetching IP address:', error);
+      }
+    };
+
+    fetchIpAddress();
+  }, []);
+
   async function handleCheckOut() {
     setIsLoading(true);
-    const userId = "98845899489458"; 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
+    const jobIpAddress = '154.72.192.78'; 
+  
     try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const userLatitude = position.coords.latitude;
-        const userLongitude = position.coords.longitude;
-
-        const rangeCoordinates = [
-          { lat: 0.3463026, lon: 32.6466738 },
-          { lat: 0.3437781, lon: 32.6538716 },
-        ];
-
-        const isInRange = checkInRange(userLatitude, userLongitude, rangeCoordinates);
-
-        if (isInRange) {
-          const response = await fetch(`${baseUrl}/api/check-out`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ studentId: userId }),
-          });
-
-          if (response.ok) {
-            setIsLoading(false);
-            const data = await response.json();
-            if (data.message) {
-              toast({
-                description: data.message,
-              });
-            } else {
-              toast({
-                description: 'Check Out was Successful',
-              });
-              changeArrival(true);
-              setCanToggleCheckOut(false);
-            }
-          } else {
-            setIsLoading(false);
+      if (clientIp === jobIpAddress) {
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        const userId = "98845899489458";
+  
+        const response = await fetch(`${baseUrl}/api/check-out`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ studentId: userId }),
+        });
+  
+        setIsLoading(false);
+  
+        if (response.ok) {
+          
+          const data = await response.json();
+          console.log(data)
+          if (data.message) {
             toast({
-              description: 'Something went wrong',
+              description: data.message,
             });
+          } else {
+            toast({
+              description: 'Check Out was Successful',
+            });
+            changeArrival(true);
+            setCanToggleCheckOut(false);
           }
-        } else {
-          setIsLoading(false);
-          toast({
-            description: 'You need to be within the specified range to check out.',
-          });
         }
-      });
+      } else {
+        setIsLoading(false);
+        toast({
+          description: 'You are not connected to the job network. Cannot check out.',
+        });
+      }
     } catch (error) {
       console.error('Check-out error:', error);
       setIsLoading(false);
@@ -99,42 +97,7 @@ export default function CheckOut({ changeArrival }: any) {
       });
     }
   }
-
-  function checkInRange(userLat: number, userLon: number, rangeCoordinates: Coordinate[]) {
-    const distanceThreshold = 1.5;
-
-    for (const coord of rangeCoordinates) {
-      const distance = calculateDistance(userLat, userLon, coord.lat, coord.lon);
-      if (distance <= distanceThreshold) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const earthRadiusKm = 6371;
-
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = earthRadiusKm * c;
-
-    return distance;
-  }
-
-  function toRadians(degrees: number) {
-    return degrees * (Math.PI / 180);
-  }
-
+  
   return (
     <div>
       <Card className="border-[#e11d48] rounded-lg">
@@ -168,7 +131,6 @@ export default function CheckOut({ changeArrival }: any) {
     </div>
   );
 }
-
 
 
 // "use client"

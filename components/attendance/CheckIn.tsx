@@ -5,15 +5,27 @@ import { Button } from '../ui/button';
 import { ScanLine } from 'lucide-react';
 import { toast } from '../ui/use-toast';
 import { Icons } from '../Icons';
-type Coordinate = {
-  lat: number;
-  lon: number;
-};
+
 export default function CheckIn({ changeArrival }: any) {
   const [studentId, setStudentId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
   const [canToggleCheckIn, setCanToggleCheckIn] = useState(true);
+  const [clientIp, setClientIp] = useState('');
+
+  useEffect(() => {
+    const fetchIpAddress = async () => {
+      try {
+        const response = await fetch('https://ipinfo.io/json');
+        const data = await response.json();
+        setClientIp(data.ip);
+      } catch (error) {
+        console.error('Error fetching IP address:', error);
+      }
+    };
+
+    fetchIpAddress();
+  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -37,146 +49,46 @@ export default function CheckIn({ changeArrival }: any) {
     return () => clearInterval(interval);
   }, []);
 
-  // async function handleCheckIn() {
-  //   setIsLoading(true);
-  //   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
-  //   try {
-  //     navigator.geolocation.getCurrentPosition(async (position) => {
-  //       const userLatitude = position.coords.latitude;
-  //       const userLongitude = position.coords.longitude;
-
-  //       const workplaceLatitude = 0.3437781;
-  //       const workplaceLongitude = 32.6538716;
-  //       const distanceThreshold = 0.001; 
-
-  //       const distance = calculateDistance(
-  //         userLatitude,
-  //         userLongitude,
-  //         workplaceLatitude,
-  //         workplaceLongitude
-  //       );
-
-  //       if (distance <= distanceThreshold) {
-  //         const response = await fetch(`${baseUrl}/api/check-in`, {
-  //           method: 'POST',
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify(studentId),
-  //         });
-
-  //         if (response.ok) {
-  //           setIsLoading(false);
-  //           const data = await response.json();
-  //           if (data.message) {
-  //             toast({
-  //               description: data.message,
-  //             });
-  //           } else {
-  //             toast({
-  //               description: 'Check In was Successful',
-  //             });
-  //             changeArrival(false);
-  //             setCanToggleCheckIn(false);
-  //           }
-  //         } else {
-  //           setIsLoading(false);
-  //           toast({
-  //             description: 'Something went wrong',
-  //           });
-  //         }
-  //       } else {
-  //         setIsLoading(false);
-  //         toast({
-  //           description: 'You need to be at the exact place to check in.',
-  //         });
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.error('Check-in error:', error);
-  //     setIsLoading(false);
-  //     toast({
-  //       description: 'Something went wrong',
-  //     });
-  //   }
-  // }
-
-  function calculateDistance(lat1:any, lon1:any, lat2:any, lon2:any) {
-    const earthRadiusKm = 6371;
-
-    const dLat = toRadians(lat2 - lat1);
-    const dLon = toRadians(lon2 - lon1);
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRadians(lat1)) *
-        Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = earthRadiusKm * c;
-
-    return distance;
-  }
-
-  function toRadians(degrees:any) {
-    return degrees * (Math.PI / 180);
-  }
   async function handleCheckIn() {
     setIsLoading(true);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  
+
     try {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const userLatitude = position.coords.latitude;
-        const userLongitude = position.coords.longitude;
-  
-        const rangeCoordinates = [
-          { lat: 0.3463026, lon: 32.6466738 },
-          { lat: 0.3437781, lon: 32.6538716 },
-          // { lat: 0.3398983, lon: 32.6390378 }
-        ];
-  
-        const isInRange = checkInRange(userLatitude, userLongitude, rangeCoordinates);
-  
-        if (isInRange) {
-          const response = await fetch(`${baseUrl}/api/check-in`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(studentId),
-          });
-  
-          if (response.ok) {
-            setIsLoading(false);
-            const data = await response.json();
-            if (data.message) {
-              toast({
-                description: data.message,
-              });
-            } else {
-              toast({
-                description: 'Check In was Successful',
-              });
-              changeArrival(false);
-              setCanToggleCheckIn(false);
-            }
-          } else {
-            setIsLoading(false);
+      if (clientIp === '154.72.192.78') {
+        const response = await fetch(`${baseUrl}/api/check-in`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(studentId),
+        });
+
+        if (response.ok) {
+          setIsLoading(false);
+          const data = await response.json();
+          if (data.message) {
             toast({
-              description: 'Something went wrong',
+              description: data.message,
             });
+          } else {
+            toast({
+              description: 'Check In was Successful',
+            });
+            changeArrival(false);
+            setCanToggleCheckIn(false);
           }
         } else {
           setIsLoading(false);
           toast({
-            description: 'You need to be within the specified range to check in.',
+            description: 'Something went wrong',
           });
         }
-      });
+      } else {
+        setIsLoading(false);
+        toast({
+          description: 'You are not connected to the job IP address. Cannot check in.',
+        });
+      }
     } catch (error) {
       console.error('Check-in error:', error);
       setIsLoading(false);
@@ -185,18 +97,7 @@ export default function CheckIn({ changeArrival }: any) {
       });
     }
   }
-  
-  function checkInRange(userLat:any, userLon:any, rangeCoordinates:any) {
-    const distanceThreshold = 1.5; 
-  
-    for (const coord of rangeCoordinates) {
-      const distance = calculateDistance(userLat, userLon, coord.lat, coord.lon);
-      if (distance <= distanceThreshold) {
-        return true;
-      }
-    }
-    return false;
-  }
+
   return (
     <div>
       <Card className='border-[#36b6fa] rounded-lg'>
@@ -230,12 +131,6 @@ export default function CheckIn({ changeArrival }: any) {
     </div>
   );
 }
-
-
-
-
-
-
 
 
 

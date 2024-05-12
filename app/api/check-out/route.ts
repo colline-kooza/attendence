@@ -15,7 +15,6 @@ export async function POST(request: any) {
     const todayEnd = new Date();
     todayEnd.setHours(23, 59, 59, 999);
 
-    // Check if the user has already checked out today
     const existingCheckoutRecord = await db.attendanceRecord.findFirst({
       where: {
         studentId,
@@ -26,12 +25,10 @@ export async function POST(request: any) {
         
       },
     });
-      // console.log(existingCheckoutRecord)
     if (existingCheckoutRecord) {
       return NextResponse.json({ message: 'Student has already checked out today' });
     }
 
-    // Check if the user has checked in today
     const existingCheckInRecord = await db.attendanceRecord.findFirst({
       where: {
         studentId,
@@ -39,15 +36,13 @@ export async function POST(request: any) {
           gte: todayStart,
           lte: todayEnd,
         },
-        // checkOut: null, // Check if the user has checked in but not checked out
+     
       },
     });
-    //  console.log(existingCheckInRecord)
     if (!existingCheckInRecord) {
       return NextResponse.json({ message: 'Student has not checked in today' });
     }
 
-    // Update the check-out time
     const updatedRecord = await db.attendanceRecord.update({
       where: { id: existingCheckInRecord.id },
       data: {
@@ -56,8 +51,7 @@ export async function POST(request: any) {
       },
     });
 
-    // console.log(updatedRecord);
-    return NextResponse.json(updatedRecord);
+    return NextResponse.json({ message: 'Check-out was successful', updatedRecord });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: 'Not In Range' });

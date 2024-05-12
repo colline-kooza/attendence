@@ -25,8 +25,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Input } from "../ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 
-
-
 const data: Payment[] = [
   {
     id: "m5gr84i9",

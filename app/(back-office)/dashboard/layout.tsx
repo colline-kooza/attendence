@@ -19,7 +19,7 @@ interface RootLayoutProps {
       <div className={`${session  ? ' h-[10vh]  sticky top-0 z-20' : 'h-[0px]'}`}>
     <DashBoardHead/>
     </div>
-    <div className={`${session ? 'p-4 lg:mt-5' : 'mt-0'}`}>
+    <div className={`${session ? 'p-2 lg:mt-2' : 'mt-0'}`}>
     {children}
     </div>
     </div>

@@ -31,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
+            "min-h-screen bg-background font-sans antialiased ",
           )}
         >
           <AuthProvider>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div >
               <div className="relative flex min-h-screen flex-col bg-background">
                 <SiteHeader />
-                <main className="flex-1">{children}</main>
+                <main className="flex-1 bg2">{children}</main>
               </div>
             </div>
             {/* <ThemeSwitcher /> */}

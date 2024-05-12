@@ -83,11 +83,9 @@ export function CardsStats() {
   
   const weeklyHoursData = calculateWeeklyHours();
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-2">
-
-
+    <div className="">
       {/* studentCard */}
-      <Card className="">
+      {/* <Card className="">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         </CardHeader>
         <CardContent className="flex items-center gap-4 w-full">
@@ -111,12 +109,12 @@ export function CardsStats() {
           
         </CardContent>
 
-      </Card>
+      </Card> */}
 
 
 
 
-      <Card>
+      <Card className=" w-full h-[330px]">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-normal">Weekly Attendance</CardTitle>
       </CardHeader>
@@ -126,7 +124,7 @@ export function CardsStats() {
           Average time: {averageTime.toFixed(2)} hours per day
         </p>
         <div className="mt-4 h-[80px]">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="200%">
             <BarChart data={weeklyHoursData.map((hours, index) => ({ day: index, hours }))}>
               <Bar
                 dataKey="hours"

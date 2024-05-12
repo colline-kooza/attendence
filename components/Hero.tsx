@@ -12,14 +12,15 @@ import { getCurrentUser } from "@/lib/authProvider";
 export default async function Hero() {
   
   return (
-  //   <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-  //   <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
-  //     Aceternity
-  //   </h1>
+  <div>
+      {/* <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
+    <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
+      Aceternity
+    </h1>
    
-  // </div>
-   <div className="overflow-hidden">
-     <div className="container relative  ">
+  </div> */}
+   <div className="overflow-hidden h-[40rem] w-full ">
+     <div className="lg:container relative  ">
       <PageHeader>
         <Announcement />
         <PageHeaderHeading className="lg:text-6xl text-4xl">Desishub Student Attendance</PageHeaderHeading>
@@ -67,5 +68,6 @@ export default async function Hero() {
     </div>
     
    </div>
+  </div>
   );
 }

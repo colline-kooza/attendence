@@ -9,7 +9,7 @@ import React from 'react'
 export default async function page() {
   return (
     <>
-       <div className='min-h-screen w-full py-5'>
+       <div className='min-h-screen w-full lg:py-5'>
         <MainCards/>
       </div>
     </>

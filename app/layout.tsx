@@ -7,7 +7,9 @@ import { ThemeProvider } from "@/components/Providers"
 import { Toaster } from "@/components/ui/toaster"
 import { SiteFooter } from "@/components/Footer"
 import AuthProvider from "@/context/page"
-
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "./api/uploadthing/core";
 
 export const metadata: Metadata = {
  creator: "Collinz Dev",
@@ -36,6 +38,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <AuthProvider>
           <Toaster />
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
+
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

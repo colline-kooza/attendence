@@ -25,7 +25,6 @@ export function CardsCreateAccount() {
   const handleImageUpload = (uploadedImages: { url: string; name: string }[]) => {
     const newImageUrls = [...imageUrls, ...uploadedImages.map((image) => image.url)];
     setImageUrls(newImageUrls);
-    alert('Upload Completed');
   };
 
   const {

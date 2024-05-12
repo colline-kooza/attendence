@@ -70,13 +70,13 @@ export default function CardsShare({ checkOut = [], students = [] }: any) {
   }, []);
 
   return (
-   <div>
-    <div className='flex justify-between items-center'>
+   <div className='lg:pt-4'>
+    <div className='flex justify-between items-center '>
       <h2 className='flex items-center gap-2 text-sm'> <Calendar className='text-[#9333ea]' size={16}/>todays attendance</h2>
       <div className='flex items-center gap-2'>
-     <Link href="/dashboard/attendence">
-     <Button className='bg-white text-xs dark:bg-black text-black dark:text-white shadow1 flex items-center gap-2 dark:hover:bg-amber-500 hover:bg-amber-500 hover:text-white'><Plus size={12}/> New attendance</Button>
-     </Link>
+      <Link href="/dashboard/attendence">
+        <Button className='hover:text-white text-xs hover:bg-black font-semibold shadow1 flex items-center gap-2 dark:hover:text-white  text-white lg:hidden mt-4'><Plus size={12}/>New attendance</Button>
+        </Link>
      
       </div>
     </div>
@@ -141,7 +141,7 @@ export default function CardsShare({ checkOut = [], students = [] }: any) {
   </>
 )}
       </div>
-      <div className='hidden md:block md:right-[1%] lg:block sticky top-[20%] right-[10%] h-[20vh]'>
+      <div className='hidden md:block md:right-[1%] lg:block sticky top-[20%] right-[40%] h-[20vh]'>
       <Card className='w-[400px] h-[300px] supports-[backdrop-filter]:bg-background/60 bg-background/95 backdrop-blur flex flex-col justify-center items-center'>
       <CardContent className='flex flex-col items-center justify-center gap-1'>
       <Calendar className='text-[#9333ea] font-bold' size={40}/>
